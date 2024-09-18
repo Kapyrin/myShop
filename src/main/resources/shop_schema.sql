@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS product_order
     order_id   BIGINT NOT NULL,
     product_id BIGINT NOT NULL,
     quantity   INT    NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES shop_order (id) ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES product (id) ON DELETE CASCADE
+    FOREIGN KEY (order_id) REFERENCES shop_order (id),
+    FOREIGN KEY (product_id) REFERENCES product (id)
 )
 
