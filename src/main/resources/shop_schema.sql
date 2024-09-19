@@ -1,4 +1,10 @@
-CREATE TABLE IF NOT EXISTS customer
+CREATE TABLE IF NOT EXISTS role
+(
+    id        INT PRIMARY KEY AUTO_INCREMENT,
+    user_role VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS users
 (
     id           BIGINT PRIMARY KEY AUTO_INCREMENT,
     first_name   VARCHAR(50)        NOT NULL,
@@ -6,7 +12,9 @@ CREATE TABLE IF NOT EXISTS customer
     email        VARCHAR(50) UNIQUE NOT NULL,
     password     VARCHAR(50)        NOT NULL,
     phone_number VARCHAR(20) UNIQUE NOT NULL,
-    address      VARCHAR(100)       NOT NULL
+    address      VARCHAR(100)       NOT NULL,
+    role_id      INT,
+    FOREIGN KEY (role_id) REFERENCES role (id)
 );
 
 CREATE TABLE IF NOT EXISTS order_status
