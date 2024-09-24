@@ -32,7 +32,7 @@ public abstract class BaseDAO<T> implements Repository<T> {
     @Override
     public List<T> getAll() {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("from " + getEntityName(), getEntityClass()).list();
+            return session.createQuery("from " + getEntityClass().getSimpleName(), getEntityClass()).list();
         } catch (Exception e) {
             e.printStackTrace();
             return List.of();
@@ -74,10 +74,4 @@ public abstract class BaseDAO<T> implements Repository<T> {
     }
 
     protected abstract Class<T> getEntityClass();
-
-    protected String getEntityName() {
-        return getEntityClass().getSimpleName();
-    }
-
-    ;
 }
