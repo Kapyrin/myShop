@@ -1,4 +1,4 @@
-package kapyrin.myshop;
+package kapyrin.myshop.servlets;
 
 import java.io.*;
 
