@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS shop_order
     order_creation_date DATE   NOT NULL,
     order_close_date    DATE,
     status_id           INT,
-    FOREIGN KEY (customer_id) REFERENCES customer (id),
+    FOREIGN KEY (customer_id) REFERENCES users (id),
     FOREIGN KEY (status_id) REFERENCES order_status (id)
 );
 
@@ -51,5 +51,5 @@ CREATE TABLE IF NOT EXISTS product_order
     quantity   INT    NOT NULL,
     FOREIGN KEY (order_id) REFERENCES shop_order (id),
     FOREIGN KEY (product_id) REFERENCES product (id)
-)
+);
 
