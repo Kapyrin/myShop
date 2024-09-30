@@ -1,40 +1,47 @@
 package configuration;
 
+import exception.PoolException;
+
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public enum MyConnectionPool {
     INSTANCE;
 
     private static final int POOL_SIZE = 10;
-    private final List<Connection> availableConnections = new ArrayList<>();
+    private final ConcurrentLinkedQueue<Connection> availableConnections = new ConcurrentLinkedQueue<>();
 
     MyConnectionPool() {
         for (int i = 0; i < POOL_SIZE; i++) {
-            availableConnections.add(ConnectionManager.openConnection());
+            availableConnections.offer(ConnectionManager.openConnection());
         }
     }
 
-    public synchronized Connection getConnection() {
+    public Connection getConnection() throws PoolException {
         if (availableConnections.isEmpty()) {
-            throw new RuntimeException("All connections in a pool are in use!");
+            throw new PoolException("All connections in a pool are in use!");
         }
-        Connection connection = availableConnections.remove(availableConnections.size() - 1);
+        Connection connection = availableConnections.poll();
         return new ConnectionProxy(connection, this);
     }
 
-    public synchronized void returnConnection(Connection connection) {
-        availableConnections.add(connection);
+    public void returnConnection(Connection connection) {
+        availableConnections.offer(connection);
         System.out.println("Connection returned to the pool.");
     }
 
-    public synchronized void closePool() throws SQLException {
-        for (Connection connection : availableConnections) {
-            connection.close();
+    public void closePool() throws PoolException {
+        while (!availableConnections.isEmpty()) {
+            Connection connection = availableConnections.poll();
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException exception) {
+                    throw new PoolException("Failed to close pool connection.", exception);
+                }
+            }
+            System.out.println("Connection pool closed.");
         }
-        availableConnections.clear();
-        System.out.println("Connection pool closed.");
     }
 }
