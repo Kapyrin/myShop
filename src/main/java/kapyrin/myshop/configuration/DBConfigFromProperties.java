@@ -1,4 +1,4 @@
-package configuration;
+package kapyrin.myshop.configuration;
 
 
 import java.io.IOException;

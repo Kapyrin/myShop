@@ -1,4 +1,4 @@
-package exception;
+package kapyrin.myshop.exception;
 
 public class PoolException extends RuntimeException {
     public PoolException(String message) {

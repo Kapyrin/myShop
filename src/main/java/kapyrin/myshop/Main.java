@@ -1,8 +1,8 @@
 package kapyrin.myshop;
 
 
-import exception.RoleException;
-import exception.UserException;
+import kapyrin.myshop.exception.RoleException;
+import kapyrin.myshop.exception.UserException;
 import kapyrin.myshop.dao.RoleDao;
 import kapyrin.myshop.dao.UserDao;
 import kapyrin.myshop.entities.Role;

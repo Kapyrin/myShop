@@ -1,6 +1,6 @@
-package configuration;
+package kapyrin.myshop.configuration;
 
-import exception.PoolException;
+import kapyrin.myshop.exception.PoolException;
 
 import java.sql.Connection;
 import java.sql.SQLException;

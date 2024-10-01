@@ -1,7 +1,7 @@
 package kapyrin.myshop.dao;
 
-import configuration.MyConnectionPool;
-import exception.UserException;
+import kapyrin.myshop.configuration.MyConnectionPool;
+import kapyrin.myshop.exception.UserException;
 import kapyrin.myshop.entities.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
