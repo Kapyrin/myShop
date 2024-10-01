@@ -20,12 +20,12 @@ public class UserServlet extends HttpServlet {
     private UserService userService;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         userService = new UserService(new UserDao());
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)  throws IOException {
         PrintWriter out = resp.getWriter();
         resp.setContentType("text/html;charset=UTF-8");
         out.println("<html>");
