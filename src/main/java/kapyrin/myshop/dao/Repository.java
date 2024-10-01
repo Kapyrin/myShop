@@ -1,16 +1,14 @@
 package kapyrin.myshop.dao;
 
+
 import java.util.List;
+import java.util.Optional;
 
 public interface Repository<T> {
-    List<T> getAll();
-
-
-    T get(long id);
-
-    void create(T entity);
-
-    void update(T entity, long id);
-
-    void delete(T entity);
+    void add (T entity);
+    void update (T entity);
+    void deleteById (long id);
+    void deleteByEntity (T entity);
+    List<T> getAll() ;
+    Optional<T> getById(long id);
 }

@@ -1,29 +1,25 @@
 package kapyrin.myshop.entities;
 
-import jakarta.persistence.*;
+import lombok.*;
 
-@Entity
-@Table(name = "role")
+@Getter
+@Setter
+@ToString
+@Builder
 public class Role {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Integer id;
 
-    @Column(name = "user_role", nullable = false, length = 50)
+    private Long id;
+
     private String userRole;
 
-    public Integer getId() {
-        return id;
-    }
-
-
-    public String getUserRole() {
-        return userRole;
-    }
-
-    public void setUserRole(String userRole) {
+    public Role(String userRole) {
         this.userRole = userRole;
     }
+
+    public Role(Long id, String userRole) {
+        this.id = id;
+        this.userRole = userRole;
+    }
+
 
 }

@@ -1,72 +1,97 @@
 package kapyrin.myshop;
 
-import kapyrin.myshop.dao.RoleDAO;
-import kapyrin.myshop.dao.UserDAO;
+
+import kapyrin.myshop.exception.RoleException;
+import kapyrin.myshop.exception.UserException;
+import kapyrin.myshop.dao.RoleDao;
+import kapyrin.myshop.dao.UserDao;
 import kapyrin.myshop.entities.Role;
 import kapyrin.myshop.entities.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public class Main {
+    private static final RoleDao roleDao = new RoleDao();
+    private static final UserDao userDao = new UserDao();
+
     public static void main(String[] args) {
-        RoleDAO roleDAO = new RoleDAO();
 
-        Role adminRole = new Role();
-        adminRole.setUserRole("admin");
-        roleDAO.create(adminRole);
-        System.out.println(adminRole.getUserRole());
-        Role managerRole = new Role();
-        managerRole.setUserRole("manager");
-        roleDAO.create(managerRole);
+        try {
+            roleDao.add(Role.builder().userRole("admin").build());
+            roleDao.add(Role.builder().userRole("manager").build());
+            roleDao.add(Role.builder().userRole("customer").build());
 
-        Role customerRole = new Role();
-        customerRole.setUserRole("customer");
-        roleDAO.create(customerRole);
+            Optional<Role> admin = roleDao.getById(1);
+            Optional<Role> manager = roleDao.getById(2);
+            Optional<Role> customer = roleDao.getById(3);
 
+            User vladimir = User.builder()
+                    .id(0L)
+                    .firstName("Vladimir")
+                    .lastName("Kapyrin")
+                    .email("vladimir.kapyrin@gmail.com")
+                    .password("password")
+                    .phoneNumber("1234567890")
+                    .address("Russia")
+                    .roleId(admin.get().getId())
+                    .build();
 
-        UserDAO userDAO = new UserDAO();
+            User bill = User.builder()
+                    .id(0L)
+                    .firstName("Bill")
+                    .lastName("Gates")
+                    .email("bill@microsot.com")
+                    .password("password")
+                    .phoneNumber("0987654321")
+                    .address("Ostin")
+                    .roleId(manager.get().getId())
+                    .build();
 
-        User elonUser = new User();
-        elonUser.setFirstName("Elon");
-        elonUser.setLastName("Mask");
-        elonUser.setEmail("elon.mask@gmail.com");
-        elonUser.setPhoneNumber("+176534556519");
-        elonUser.setPassword("password");
-        elonUser.setAddress("USA");
-        elonUser.setRole(customerRole);
-        userDAO.create(elonUser);
+            User ilon = User.builder()
+                    .id(0L)
+                    .firstName("Elon")
+                    .lastName("Musk")
+                    .email("elon@tesla.com")
+                    .password("password")
+                    .phoneNumber("1234509876")
+                    .address("Redmond")
+                    .roleId(customer.get().getId())
+                    .build();
 
+            userDao.add(vladimir);
+            userDao.add(bill);
+            userDao.add(ilon);
 
-        User billGates = new User();
-        billGates.setFirstName("Bill");
-        billGates.setLastName("Gates");
-        billGates.setEmail("bill.gates@gmail.com");
-        billGates.setPhoneNumber("+16735664495");
-        billGates.setPassword("password");
-        billGates.setAddress("USA");
-        billGates.setRole(managerRole);
-        userDAO.create(billGates);
+            List<User> allUsers = userDao.getAll();
+            for (User user : allUsers) {
+                System.out.println(user);
+            }
 
-        List<User> userList = userDAO.getAll();
-        System.out.println(userList);
+            Optional<User> updated = userDao.getById(2);
+            System.out.println(updated);
+            if (updated.isPresent()) {
+                updated.get().setFirstName("First");
+                updated.get().setLastName("Last");
+                updated.get().setEmail("update@email.com");
+                updated.get().setPhoneNumber("6789012456");
+                updated.get().setAddress("Washington");
 
+                userDao.update(updated.orElse(null));
+            } else throw new UserException("User not found");
 
-        User billCheckingUser = userDAO.get(2);
-        System.out.println(billCheckingUser);
+            Optional<User> deleted = userDao.getById(3);
+            System.out.println("Deleting user " + deleted.get().getFirstName() + " " + deleted.get().getLastName());
+            userDao.deleteById(3);
 
-        User vladimirUser = new User();
-        vladimirUser.setFirstName("Vladimir");
-        vladimirUser.setLastName("Kapyrin");
-        vladimirUser.setEmail("vladimir.kapyrin@gmail.com");
-        vladimirUser.setPhoneNumber("+7999 7057796");
-        vladimirUser.setPassword("password");
-        vladimirUser.setAddress("Russia");
-        vladimirUser.setRole(adminRole);
-        userDAO.update(vladimirUser, 2);
-        User updatedUser = userDAO.get(2);
-        System.out.println(updatedUser);
+            List<User> afterDeleteUsers = userDao.getAll();
+            for (User user : afterDeleteUsers) {
+                System.out.println(user);
+            }
 
-        userDAO.delete(updatedUser);
-
+        } catch (RoleException | UserException e) {
+            e.printStackTrace();
+        }
     }
 }
+
