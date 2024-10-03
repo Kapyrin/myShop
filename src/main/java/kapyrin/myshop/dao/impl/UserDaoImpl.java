@@ -1,6 +1,8 @@
-package kapyrin.myshop.dao;
+package kapyrin.myshop.dao.impl;
 
 import kapyrin.myshop.configuration.MyConnectionPool;
+import kapyrin.myshop.dao.Repository;
+import kapyrin.myshop.entities.Role;
 import kapyrin.myshop.exception.UserException;
 import kapyrin.myshop.entities.User;
 import org.apache.logging.log4j.LogManager;
@@ -14,14 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class UserDao implements Repository<User> {
+public enum UserDaoImpl implements Repository<User> {
+    INSTANCE;
     private static final String ADD_USER = "INSERT INTO users (first_name, last_name, email, password, phone_number, address, role_id) VALUES (?, ?, ?, ?,?,?,?)";
     private static final String UPDATE_USER = "UPDATE users SET first_name = ?, last_name = ?, email = ?, password = ?, phone_number = ?, address = ?, role_id = ? WHERE id = ?";
     private static final String DELETE_USER = "DELETE FROM users WHERE id = ?";
     private static final String SELECT_USER_BY_ID = "SELECT * FROM users WHERE id = ?";
     private static final String SELECT_ALL_USERS = "SELECT * FROM users";
 
-    private static final Logger logger = LogManager.getLogger(UserDao.class);
+    private static final Logger logger = LogManager.getLogger(UserDaoImpl.class);
 
     private static final String DB_ID = "id";
     private static final String DB_FIRST_NAME = "first_name";
@@ -127,6 +130,9 @@ public class UserDao implements Repository<User> {
     }
 
     private User createUserFromResultSet(ResultSet set) throws SQLException {
+        Role role = Role.builder()
+                .id(set.getLong(DB_ROLE_ID))
+                .build();
         return User.builder()
                 .id(set.getLong(DB_ID))
                 .firstName(set.getString(DB_FIRST_NAME))
@@ -135,7 +141,7 @@ public class UserDao implements Repository<User> {
                 .password(set.getString(DB_PASSWORD))
                 .phoneNumber(set.getString(DB_PHONE_NUMBER))
                 .address(set.getString(DB_ADDRESS))
-                .roleId(set.getLong(DB_ROLE_ID))
+                .role(role)
                 .build();
     }
 
@@ -146,7 +152,7 @@ public class UserDao implements Repository<User> {
         preparedStatement.setString(4, user.getPassword());
         preparedStatement.setString(5, user.getPhoneNumber());
         preparedStatement.setString(6, user.getAddress());
-        preparedStatement.setLong(7, user.getRoleId());
+        preparedStatement.setLong(7, user.getRole().getId());
     }
 }
 

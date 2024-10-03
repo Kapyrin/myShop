@@ -6,6 +6,7 @@ import lombok.*;
 @Setter
 @Builder
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = "role")
 @ToString
 public class User {
     private Long id;
@@ -15,5 +16,5 @@ public class User {
     private String password;
     private String phoneNumber;
     private String address;
-    private long roleId;
+    private Role role;
 }

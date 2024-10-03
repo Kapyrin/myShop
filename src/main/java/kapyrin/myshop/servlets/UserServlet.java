@@ -1,10 +1,9 @@
 package kapyrin.myshop.servlets;
 
-import kapyrin.myshop.dao.UserDao;
+import kapyrin.myshop.dao.impl.UserDaoImpl;
 import kapyrin.myshop.entities.User;
-import kapyrin.myshop.service.UserService;
+import kapyrin.myshop.service.impl.UserServiceImpl;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,15 +16,15 @@ import java.util.Optional;
 
 @WebServlet("/user")
 public class UserServlet extends HttpServlet {
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @Override
     public void init() {
-        userService = new UserService(new UserDao());
+        userServiceImpl = UserServiceImpl.INSTANCE.initRepository(UserDaoImpl.INSTANCE);
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)  throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         PrintWriter out = resp.getWriter();
         resp.setContentType("text/html;charset=UTF-8");
         out.println("<html>");
@@ -35,7 +34,7 @@ public class UserServlet extends HttpServlet {
         out.println("<body>");
         String userId = req.getParameter("id");
         if (userId == null || userId.isEmpty()) {
-            List<User> users = userService.getAllUsers();
+            List<User> users = userServiceImpl.getAll();
             out.println("<h1>All users:</h1>");
             out.println("<ul>");
             for (User user : users) {
@@ -44,7 +43,7 @@ public class UserServlet extends HttpServlet {
             out.println("</ul>");
         } else {
             Long id = Long.parseLong(userId);
-            Optional<User> user = userService.getUserById(id);
+            Optional<User> user = userServiceImpl.getById(id);
             if (user.isPresent()) {
                 User u = user.get();
                 out.println("<h1>You chose a user:</h1>");

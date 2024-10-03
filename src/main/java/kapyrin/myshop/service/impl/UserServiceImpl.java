@@ -1,39 +1,48 @@
-package kapyrin.myshop.service;
+package kapyrin.myshop.service.impl;
 
 import kapyrin.myshop.dao.Repository;
 import kapyrin.myshop.entities.User;
+import kapyrin.myshop.service.ServiceInterface;
 
 import java.util.List;
 import java.util.Optional;
 
-public class UserService {
-    private final Repository userRepository;
+public enum UserServiceImpl implements ServiceInterface<User> {
+    INSTANCE;
+    private Repository userRepository;
 
-    public UserService(Repository<User> userRepository) {
+    public UserServiceImpl initRepository(Repository<User> userRepository) {
         this.userRepository = userRepository;
+        return this;
     }
 
+    @Override
     public void add(User user) {
         userRepository.add(user);
     }
 
+    @Override
     public void update(User user) {
         userRepository.update(user);
     }
 
+    @Override
     public void deleteById(long id) {
         userRepository.deleteById(id);
     }
 
+    @Override
     public void deleteByEntity(User user) {
         userRepository.deleteByEntity(user);
     }
 
-    public List<User> getAllUsers() {
+    @Override
+    public List<User> getAll() {
         return userRepository.getAll();
     }
 
-    public Optional<User> getUserById(long id) {
+    @Override
+    public Optional<User> getById(long id) {
         return userRepository.getById(id);
     }
 

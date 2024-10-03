@@ -1,6 +1,7 @@
-package kapyrin.myshop.dao;
+package kapyrin.myshop.dao.impl;
 
 import kapyrin.myshop.configuration.MyConnectionPool;
+import kapyrin.myshop.dao.Repository;
 import kapyrin.myshop.exception.RoleException;
 import kapyrin.myshop.entities.Role;
 import org.apache.logging.log4j.Logger;
@@ -14,14 +15,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class RoleDao implements Repository<Role> {
+public enum RoleDaoImpl implements Repository<Role> {
+    INSTANCE;
     private static final String ADD_ROLE = "INSERT INTO role (user_role) VALUES (?)";
     private static final String UPDATE_ROLE = "UPDATE role SET user_role = ? WHERE id = ?";
     private static final String DELETE_ROLE = "DELETE FROM role WHERE id = ?";
     private static final String SELECT_ALL_ROLES = "SELECT * FROM role";
     private static final String SELECT_ROLE_BY_ID = "SELECT * FROM role WHERE id = ?";
 
-    private static final Logger logger = LogManager.getLogger(RoleDao.class);
+    private static final Logger logger = LogManager.getLogger(RoleDaoImpl.class);
 
     private static final String DB_ID = "id";
     private static final String DB_USER_ROLE = "user_role";

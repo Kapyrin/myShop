@@ -1,6 +1,8 @@
 package kapyrin.myshop.configuration;
 
 
+import kapyrin.myshop.exception.LoadPropertiesException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -21,7 +23,7 @@ public final class DBConfigFromProperties {
         try (InputStream resourceAsStream = DBConfigFromProperties.class.getClassLoader().getResourceAsStream(DB_PROPERTIES_FILE)) {
             PROPERTIES.load(resourceAsStream);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new LoadPropertiesException("Problem while loading properties file", e);
         }
     }
 
