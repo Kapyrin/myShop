@@ -27,6 +27,7 @@ public enum MyConnectionPool {
             throw new PoolException("All connections in a pool are in use!");
         }
         Connection connection = availableConnections.poll();
+        logger.info("Connection received from pool");
         return new ConnectionProxy(connection, this);
     }
 

@@ -1,9 +1,9 @@
 package kapyrin.myshop.dao.impl;
 
 import kapyrin.myshop.configuration.MyConnectionPool;
-import kapyrin.myshop.dao.Repository;
+import kapyrin.myshop.dao.DAOInterfaces.RepositoryWithOneParameterInSomeMethods;
 import kapyrin.myshop.entities.Role;
-import kapyrin.myshop.exception.UserException;
+import kapyrin.myshop.exception.entities.UserException;
 import kapyrin.myshop.entities.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public enum UserDaoImpl implements Repository<User> {
+public enum UserDAOImpl implements RepositoryWithOneParameterInSomeMethods<User> {
     INSTANCE;
     private static final String ADD_USER = "INSERT INTO users (first_name, last_name, email, password, phone_number, address, role_id) VALUES (?, ?, ?, ?,?,?,?)";
     private static final String UPDATE_USER = "UPDATE users SET first_name = ?, last_name = ?, email = ?, password = ?, phone_number = ?, address = ?, role_id = ? WHERE id = ?";
@@ -24,7 +24,7 @@ public enum UserDaoImpl implements Repository<User> {
     private static final String SELECT_USER_BY_ID = "SELECT * FROM users WHERE id = ?";
     private static final String SELECT_ALL_USERS = "SELECT * FROM users";
 
-    private static final Logger logger = LogManager.getLogger(UserDaoImpl.class);
+    private static final Logger logger = LogManager.getLogger(UserDAOImpl.class);
 
     private static final String DB_ID = "id";
     private static final String DB_FIRST_NAME = "first_name";
@@ -83,7 +83,7 @@ public enum UserDaoImpl implements Repository<User> {
     @Override
     public void deleteByEntity(User user) {
         logger.debug("Deleting user: " + user.getLastName() + " " + user.getFirstName());
-        if (user == null) {
+        if (user == null || user.getId() == null) {
             throw new UserException("User is null");
         }
         long userId = user.getId();
@@ -110,14 +110,13 @@ public enum UserDaoImpl implements Repository<User> {
     }
 
     @Override
-    public Optional<User> getById(long userId) throws UserException {
+    public Optional<User> getById(long userId) {
         logger.debug("Getting user with id : " + userId);
         try (Connection connection = MyConnectionPool.INSTANCE.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_ID)) {
             preparedStatement.setLong(1, userId);
             try (ResultSet set = preparedStatement.executeQuery()) {
                 if (set.next()) {
-
                     return Optional.of(createUserFromResultSet(set));
                 }
             }
@@ -130,9 +129,10 @@ public enum UserDaoImpl implements Repository<User> {
     }
 
     private User createUserFromResultSet(ResultSet set) throws SQLException {
-        Role role = Role.builder()
-                .id(set.getLong(DB_ROLE_ID))
-                .build();
+        long roleId = set.getLong(DB_ROLE_ID);
+        Optional<Role> optionalRole = RoleDAOImpl.INSTANCE.getById(roleId);
+        Role role = optionalRole.orElseThrow(() -> new UserException("Failed to retrieve role with id : " + roleId));
+
         return User.builder()
                 .id(set.getLong(DB_ID))
                 .firstName(set.getString(DB_FIRST_NAME))

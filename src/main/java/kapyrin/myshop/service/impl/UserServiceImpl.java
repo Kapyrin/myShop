@@ -1,6 +1,6 @@
 package kapyrin.myshop.service.impl;
 
-import kapyrin.myshop.dao.Repository;
+import kapyrin.myshop.dao.DAOInterfaces.RepositoryWithOneParameterInSomeMethods;
 import kapyrin.myshop.entities.User;
 import kapyrin.myshop.service.ServiceInterface;
 
@@ -9,9 +9,9 @@ import java.util.Optional;
 
 public enum UserServiceImpl implements ServiceInterface<User> {
     INSTANCE;
-    private Repository userRepository;
+    private RepositoryWithOneParameterInSomeMethods userRepository;
 
-    public UserServiceImpl initRepository(Repository<User> userRepository) {
+    public UserServiceImpl initRepository(RepositoryWithOneParameterInSomeMethods<User> userRepository) {
         this.userRepository = userRepository;
         return this;
     }

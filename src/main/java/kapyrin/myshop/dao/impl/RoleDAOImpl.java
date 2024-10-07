@@ -1,9 +1,10 @@
 package kapyrin.myshop.dao.impl;
 
 import kapyrin.myshop.configuration.MyConnectionPool;
-import kapyrin.myshop.dao.Repository;
-import kapyrin.myshop.exception.RoleException;
+import kapyrin.myshop.dao.DAOInterfaces.RepositoryWithOneParameterInSomeMethods;
+import kapyrin.myshop.exception.entities.RoleException;
 import kapyrin.myshop.entities.Role;
+
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public enum RoleDaoImpl implements Repository<Role> {
+public enum RoleDAOImpl implements RepositoryWithOneParameterInSomeMethods<Role> {
     INSTANCE;
     private static final String ADD_ROLE = "INSERT INTO role (user_role) VALUES (?)";
     private static final String UPDATE_ROLE = "UPDATE role SET user_role = ? WHERE id = ?";
@@ -23,14 +24,14 @@ public enum RoleDaoImpl implements Repository<Role> {
     private static final String SELECT_ALL_ROLES = "SELECT * FROM role";
     private static final String SELECT_ROLE_BY_ID = "SELECT * FROM role WHERE id = ?";
 
-    private static final Logger logger = LogManager.getLogger(RoleDaoImpl.class);
+    private static final Logger logger = LogManager.getLogger(RoleDAOImpl.class);
 
     private static final String DB_ID = "id";
     private static final String DB_USER_ROLE = "user_role";
 
     @Override
     public void add(Role role) {
-        logger.debug("Adding role: " + role);
+        logger.debug("Adding role: " + role.getUserRole());
         try (Connection connection = MyConnectionPool.INSTANCE.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(ADD_ROLE)) {
             preparedStatement.setString(1, role.getUserRole());
@@ -75,7 +76,7 @@ public enum RoleDaoImpl implements Repository<Role> {
     @Override
     public void deleteByEntity(Role role) {
         logger.debug("Deleting role: " + role.getUserRole());
-        if (role == null){
+        if (role == null || role.getId() == null) {
             logger.error("Role is null");
             throw new RoleException("Role is null");
         }

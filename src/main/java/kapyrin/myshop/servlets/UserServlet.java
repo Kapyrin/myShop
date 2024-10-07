@@ -1,6 +1,6 @@
 package kapyrin.myshop.servlets;
 
-import kapyrin.myshop.dao.impl.UserDaoImpl;
+import kapyrin.myshop.dao.impl.UserDAOImpl;
 import kapyrin.myshop.entities.User;
 import kapyrin.myshop.service.impl.UserServiceImpl;
 
@@ -20,7 +20,7 @@ public class UserServlet extends HttpServlet {
 
     @Override
     public void init() {
-        userServiceImpl = UserServiceImpl.INSTANCE.initRepository(UserDaoImpl.INSTANCE);
+        userServiceImpl = UserServiceImpl.INSTANCE.initRepository(UserDAOImpl.INSTANCE);
     }
 
     @Override
