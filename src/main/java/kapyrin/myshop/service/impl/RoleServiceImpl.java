@@ -3,11 +3,12 @@ package kapyrin.myshop.service.impl;
 import kapyrin.myshop.dao.DAOInterfaces.RepositoryWithOneParameterInSomeMethods;
 import kapyrin.myshop.entities.Role;
 import kapyrin.myshop.service.ServiceInterface;
+import kapyrin.myshop.service.ServiceWithOneParameterInSomeMethod;
 
 import java.util.List;
 import java.util.Optional;
 
-public enum RoleServiceImpl implements ServiceInterface<Role> {
+public enum RoleServiceImpl implements ServiceWithOneParameterInSomeMethod<Role> {
     INSTANCE;
     private RepositoryWithOneParameterInSomeMethods roleRepository;
 

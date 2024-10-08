@@ -26,6 +26,7 @@ public enum ProductOrderDaoImpl implements RepositoryWithTwoParametersInSomeMeth
     private static final String DELETE_PRODUCT_ORDER = "DELETE FROM product_order WHERE order_id = ? AND product_id = ?";
     private static final String SELECT_ALL_PRODUCT_ORDERS = "SELECT * FROM product_order";
     private static final String SELECT_PRODUCT_ORDER_BY_ID = "SELECT * FROM product_order WHERE order_id = ? AND product_id = ?";
+    private static final String UPDATE_PRODUCT_QUANTITY = "UPDATE product SET product_remain = ? WHERE id = ?";
 
     private static final Logger logger = LogManager.getLogger(ProductOrderDaoImpl.class);
 
@@ -33,22 +34,55 @@ public enum ProductOrderDaoImpl implements RepositoryWithTwoParametersInSomeMeth
     private static final String DB_PRODUCT_ID = "product_id";
     private static final String DB_QUANTITY = "quantity";
 
+    //    @Override
+//    public void add(ProductOrder productOrder) {
+//        logger.debug("Adding product order");
+//        try (Connection connection = MyConnectionPool.INSTANCE.getConnection();
+//             PreparedStatement preparedStatement = connection.prepareStatement(ADD_PRODUCT_ORDER)) {
+//            preparedStatement.setLong(1, productOrder.getOrder().getId());
+//            preparedStatement.setLong(2, productOrder.getProduct().getId());
+//            preparedStatement.setInt(3, productOrder.getQuantity());
+//            preparedStatement.executeUpdate();
+//            logger.info("Added product order");
+//        } catch (SQLException e) {
+//            logger.error(e);
+//            throw new ProductOrderException("Failed to add product order", e);
+//        }
+//
+//    }
     @Override
     public void add(ProductOrder productOrder) {
         logger.debug("Adding product order");
-        try (Connection connection = MyConnectionPool.INSTANCE.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(ADD_PRODUCT_ORDER)) {
-            preparedStatement.setLong(1, productOrder.getOrder().getId());
-            preparedStatement.setLong(2, productOrder.getProduct().getId());
-            preparedStatement.setInt(3, productOrder.getQuantity());
-            preparedStatement.executeUpdate();
-            logger.info("Added product order");
+        try (Connection connection = MyConnectionPool.INSTANCE.getConnection()) {
+            Optional<Product> optionalProduct = ProductDAOImpl.INSTANCE.getById(productOrder.getProduct().getId());
+            Product product = optionalProduct.orElseThrow(() -> new ProductException("Product not found with id: " + productOrder.getProduct().getId()));
+
+            int availableQuantity = product.getProductRemain();
+            int requiredQuantity = productOrder.getQuantity();
+
+            if (availableQuantity < requiredQuantity) {
+                throw new ProductOrderException("Not enough products in stock. Available: " + availableQuantity + ", Required: " + requiredQuantity);
+            }
+            try (PreparedStatement updateProductStatement = connection.prepareStatement(UPDATE_PRODUCT_QUANTITY)) {
+                updateProductStatement.setInt(1, availableQuantity - requiredQuantity);
+                updateProductStatement.setLong(2, productOrder.getProduct().getId());
+                updateProductStatement.executeUpdate();
+            }
+            logger.info("Product quantity updated");
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(ADD_PRODUCT_ORDER)) {
+                preparedStatement.setLong(1, productOrder.getOrder().getId());
+                preparedStatement.setLong(2, productOrder.getProduct().getId());
+                preparedStatement.setInt(3, requiredQuantity);
+                preparedStatement.executeUpdate();
+            }
+            logger.info("Successfully added product order and updated product quantity");
         } catch (SQLException e) {
             logger.error(e);
             throw new ProductOrderException("Failed to add product order", e);
         }
-
     }
+
 
     @Override
     public void update(ProductOrder productOrder) {
