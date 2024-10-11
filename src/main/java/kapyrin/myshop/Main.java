@@ -65,9 +65,21 @@ public class Main {
                     .role(manager.get())
                     .build();
 
+
+            User adminUser = User.builder()
+                    .firstName("Main")
+                    .lastName("Admin")
+                    .email("admin@admin.ru")
+                    .password("admin_passport")
+                    .phoneNumber("+79997057796")
+                    .address("Bryansk")
+                    .role(admin.get())
+                    .build();
+
             USER_DAO_IMPL.add(vladimir);
             USER_DAO_IMPL.add(bill);
             USER_DAO_IMPL.add(ilon);
+            USER_DAO_IMPL.add(adminUser);
 
             List<User> allUsers = USER_DAO_IMPL.getAll();
             for (User user : allUsers) {

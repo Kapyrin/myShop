@@ -23,6 +23,7 @@ public enum RoleDAOImpl implements RepositoryWithOneParameterInSomeMethods<Role>
     private static final String DELETE_ROLE = "DELETE FROM role WHERE id = ?";
     private static final String SELECT_ALL_ROLES = "SELECT * FROM role";
     private static final String SELECT_ROLE_BY_ID = "SELECT * FROM role WHERE id = ?";
+    private static final String SELECT_ROLE_BY_ROLE_NAME = "SELECT * FROM role WHERE user_role = ?";
 
     private static final Logger logger = LogManager.getLogger(RoleDAOImpl.class);
 
@@ -118,6 +119,24 @@ public enum RoleDAOImpl implements RepositoryWithOneParameterInSomeMethods<Role>
         } catch (SQLException e) {
             logger.error(e);
             throw new RoleException("Failed to get role by id", e);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<Role> getByRoleName(String roleName) {
+        logger.debug("Getting role by role name: " + roleName);
+        try (Connection connection = MyConnectionPool.INSTANCE.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ROLE_BY_ROLE_NAME)) {
+            preparedStatement.setString(1, roleName);
+            try (ResultSet set = preparedStatement.executeQuery()) {
+                if (set.next()) {
+                    return Optional.of(createRoleFromResultSet(set));
+                }
+            }
+            logger.info("Getting role by role name: " + roleName);
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new RoleException("Failed to get role by role name", e);
         }
         return Optional.empty();
     }

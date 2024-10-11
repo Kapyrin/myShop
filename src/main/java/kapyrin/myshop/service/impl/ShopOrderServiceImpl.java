@@ -1,6 +1,7 @@
 package kapyrin.myshop.service.impl;
 
 import kapyrin.myshop.dao.DAOInterfaces.RepositoryWithOneParameterInSomeMethods;
+import kapyrin.myshop.dao.impl.ShopOrderDAOImpl;
 import kapyrin.myshop.entities.ShopOrder;
 import kapyrin.myshop.service.ServiceWithOneParameterInSomeMethod;
 
@@ -45,5 +46,12 @@ public enum ShopOrderServiceImpl implements ServiceWithOneParameterInSomeMethod<
     @Override
     public List<ShopOrder> getAll() {
         return shopOrderRepository.getAll();
+    }
+
+    public List<ShopOrder> getAllOrdersByUserId(long userId) {
+        if (shopOrderRepository instanceof ShopOrderDAOImpl) {
+            return ((ShopOrderDAOImpl) shopOrderRepository).getAllOrdersByUserId(userId);
+        }
+        return List.of();
     }
 }

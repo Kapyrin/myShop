@@ -26,6 +26,7 @@ public enum ShopOrderDAOImpl implements RepositoryWithOneParameterInSomeMethods<
     private static final String DELETE_ORDER = "DELETE FROM shop_order WHERE id = ?";
     private static final String SELECT_ALL_ORDERS = "SELECT * FROM shop_order";
     private static final String SELECT_ORDER_BY_ID = "SELECT * FROM shop_order WHERE id = ?";
+    private static final String SELECT_ORDERS_BY_CUSTOMER_ID = "SELECT * FROM shop_order WHERE customer_id = ?";
 
     private static final Logger logger = LogManager.getLogger(ShopOrderDAOImpl.class);
 
@@ -124,6 +125,25 @@ public enum ShopOrderDAOImpl implements RepositoryWithOneParameterInSomeMethods<
             throw new OrderException("Error retrieving order with id " + id, e);
         }
         return Optional.empty();
+    }
+
+    public List<ShopOrder> getAllOrdersByUserId(long userId) {
+        logger.debug("Getting all orders by userId: " + userId);
+        List<ShopOrder> orders = new ArrayList<>();
+        try (Connection connection = MyConnectionPool.INSTANCE.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_ORDERS_BY_CUSTOMER_ID)) {
+            statement.setLong(1, userId);
+            try (ResultSet set = statement.executeQuery()) {
+                while (set.next()) {
+                    orders.add(createShopOrderFromResultSet(set));
+                }
+                logger.info("Retrieved orders by customer id: " + userId);
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new OrderException("Error retrieving orders by customer id: " + userId, e);
+        }
+        return orders;
     }
 
     private void setPreparedStatementFields(PreparedStatement statement, ShopOrder order) throws SQLException {

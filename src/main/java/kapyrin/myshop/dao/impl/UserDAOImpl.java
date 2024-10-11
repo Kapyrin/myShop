@@ -23,6 +23,8 @@ public enum UserDAOImpl implements RepositoryWithOneParameterInSomeMethods<User>
     private static final String DELETE_USER = "DELETE FROM users WHERE id = ?";
     private static final String SELECT_USER_BY_ID = "SELECT * FROM users WHERE id = ?";
     private static final String SELECT_ALL_USERS = "SELECT * FROM users";
+    private static final String AUTHENTICATE_USER = "SELECT id, first_name, last_name, email, password, phone_number, address, role_id FROM users WHERE email = ? AND password = ?";
+
 
     private static final Logger logger = LogManager.getLogger(UserDAOImpl.class);
 
@@ -124,6 +126,25 @@ public enum UserDAOImpl implements RepositoryWithOneParameterInSomeMethods<User>
         } catch (SQLException e) {
             logger.error(e);
             throw new UserException("Failed to retrieve user with id : " + userId, e);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<User> authenticateUser(String email, String password) {
+        logger.debug("Authenticating user with email : " + email);
+        try (Connection connection = MyConnectionPool.INSTANCE.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(AUTHENTICATE_USER)) {
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, password);
+            try (ResultSet set = preparedStatement.executeQuery()) {
+                if (set.next()) {
+                    return Optional.of(createUserFromResultSet(set));
+                }
+            }
+            logger.info("Authenticated user with email : " + email);
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new UserException("Failed to authenticate user with email : " + email, e);
         }
         return Optional.empty();
     }

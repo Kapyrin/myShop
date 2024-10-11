@@ -1,6 +1,7 @@
 package kapyrin.myshop.service.impl;
 
 import kapyrin.myshop.dao.DAOInterfaces.RepositoryWithOneParameterInSomeMethods;
+import kapyrin.myshop.dao.impl.UserDAOImpl;
 import kapyrin.myshop.entities.User;
 import kapyrin.myshop.service.ServiceWithOneParameterInSomeMethod;
 
@@ -46,6 +47,11 @@ public enum UserServiceImpl implements ServiceWithOneParameterInSomeMethod<User>
         return userRepository.getById(id);
     }
 
-
+    public Optional<User> authenticateUser(String email, String password) {
+        if (userRepository instanceof UserDAOImpl) {
+            return ((UserDAOImpl) userRepository).authenticateUser(email, password);
+        }
+        return Optional.empty();
+    }
 }
 
