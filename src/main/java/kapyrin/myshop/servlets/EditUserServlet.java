@@ -11,6 +11,7 @@ import kapyrin.myshop.entities.Role;
 import kapyrin.myshop.entities.User;
 import kapyrin.myshop.service.impl.RoleServiceImpl;
 import kapyrin.myshop.service.impl.UserServiceImpl;
+import kapyrin.myshop.servlets.util.UserRequestMapper;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -45,35 +46,9 @@ public class EditUserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String userIdParam = request.getParameter("userId");
-
-        if (userIdParam != null) {
-            long userId = Long.parseLong(userIdParam);
-            String firstName = request.getParameter("firstName");
-            String lastName = request.getParameter("lastName");
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
-            String phoneNumber = request.getParameter("phoneNumber");
-            String address = request.getParameter("address");
-            String roleParam = request.getParameter("role");
-            Role role = roleService.getByRoleName(roleParam).get();
-
-            userService.update(User.builder()
-                    .id(userId)
-                    .firstName(firstName)
-                    .lastName(lastName)
-                    .email(email)
-                    .password(password)
-                    .phoneNumber(phoneNumber)
-                    .address(address)
-                    .role(role)
-                    .build());
-
-            response.sendRedirect("users");
-        } else {
-            response.sendRedirect("users");
-        }
+        User user = UserRequestMapper.INSTANCE.extractUserFromRequest(request, true);
+        userService.update(user);
+        response.sendRedirect("users");
     }
-
 
 }

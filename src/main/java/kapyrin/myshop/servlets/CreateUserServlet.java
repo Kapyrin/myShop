@@ -11,6 +11,7 @@ import kapyrin.myshop.entities.Role;
 import kapyrin.myshop.entities.User;
 import kapyrin.myshop.service.impl.RoleServiceImpl;
 import kapyrin.myshop.service.impl.UserServiceImpl;
+import kapyrin.myshop.servlets.util.UserRequestMapper;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -24,45 +25,27 @@ public class CreateUserServlet extends HttpServlet {
     public void init() {
         userService = UserServiceImpl.INSTANCE.initRepository(UserDAOImpl.INSTANCE);
         roleService = RoleServiceImpl.INSTANCE.initRepository(RoleDAOImpl.INSTANCE);
+        UserRequestMapper.INSTANCE.init(roleService);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String firstName = req.getParameter("firstName");
-        String lastName = req.getParameter("lastName");
-        String email = req.getParameter("email");
-        String password = req.getParameter("password");
-        String phoneNumber = req.getParameter("phoneNumber");
-        String address = req.getParameter("address");
-        String role = req.getParameter("role");
-
-        Optional<Role> userRole = roleService.getByRoleName(role);
-        User user = User.builder()
-                .firstName(firstName)
-                .lastName(lastName)
-                .email(email)
-                .password(password)
-                .phoneNumber(phoneNumber)
-                .address(address)
-                .role(userRole.get())
-                .build();
+        User user = UserRequestMapper.INSTANCE.extractUserFromRequest(req, false);
         userService.add(user);
-
-        String redirectURL;
-        switch (role.toLowerCase()) {
-            case "admin":
-                redirectURL = "/admin";
-                break;
-            case "manager":
-                redirectURL = "/managers";
-                break;
-            case "customer":
-                redirectURL = "/userOrders";
-                break;
-            default:
-                redirectURL = "/index.html";
-                break;
-        }
+        String redirectURL = redirectURL(user.getRole().getUserRole());
         resp.sendRedirect(redirectURL);
+    }
+
+    private String redirectURL(String roleName) {
+        switch (roleName.toLowerCase()) {
+            case "admin":
+                return "/admin";
+            case "manager":
+                return "/managers";
+            case "customer":
+                return "/userOrders";
+            default:
+                return "/index.html";
+        }
     }
 }
