@@ -4,16 +4,11 @@ import lombok.*;
 
 @Getter
 @Setter
-@ToString
 @Builder
 @AllArgsConstructor
 @EqualsAndHashCode
-public class Role {
-
+@ToString
+public class OrderStatus {
     private Long id;
-
-    private String userRole;
-
-
-
+    private String statusName;
 }
