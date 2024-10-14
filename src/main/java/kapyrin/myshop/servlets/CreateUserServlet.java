@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import kapyrin.myshop.dao.impl.RoleDAOImpl;
 import kapyrin.myshop.dao.impl.UserDAOImpl;
 import kapyrin.myshop.entities.Role;
@@ -32,18 +33,22 @@ public class CreateUserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         User user = UserRequestMapper.INSTANCE.extractUserFromRequest(req, false);
         userService.add(user);
-        String redirectURL = redirectURL(user.getRole().getUserRole());
+        User userFromDb = UserServiceImpl.INSTANCE.authenticate(user.getEmail(), user.getPassword()).orElse(null);
+
+        HttpSession session = req.getSession();
+        session.setAttribute("user", userFromDb);
+        String redirectURL = redirectURL(userFromDb.getRole().getUserRole());
         resp.sendRedirect(redirectURL);
     }
 
     private String redirectURL(String roleName) {
         switch (roleName.toLowerCase()) {
             case "admin":
-                return "/admin";
+                return "/users";
             case "manager":
                 return "/managers";
             case "customer":
-                return "/userOrders";
+                return "/customerOrders";
             default:
                 return "/index.html";
         }

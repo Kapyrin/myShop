@@ -1,18 +1,18 @@
 package kapyrin.myshop.service.impl;
 
-import kapyrin.myshop.dao.DAOInterfaces.RepositoryWithOneParameterInSomeMethods;
-import kapyrin.myshop.dao.impl.UserDAOImpl;
+
+import kapyrin.myshop.dao.DAOInterfaces.AuthenticateUser;
 import kapyrin.myshop.entities.User;
-import kapyrin.myshop.service.ServiceWithOneParameterInSomeMethod;
+import kapyrin.myshop.service.ServiceAuthenticate;
 
 import java.util.List;
 import java.util.Optional;
 
-public enum UserServiceImpl implements ServiceWithOneParameterInSomeMethod<User> {
+public enum UserServiceImpl implements ServiceAuthenticate<User> {
     INSTANCE;
-    private RepositoryWithOneParameterInSomeMethods userRepository;
+    private AuthenticateUser userRepository;
 
-    public UserServiceImpl initRepository(RepositoryWithOneParameterInSomeMethods<User> userRepository) {
+    public UserServiceImpl initRepository(AuthenticateUser<User> userRepository) {
         this.userRepository = userRepository;
         return this;
     }
@@ -47,11 +47,9 @@ public enum UserServiceImpl implements ServiceWithOneParameterInSomeMethod<User>
         return userRepository.getById(id);
     }
 
-    public Optional<User> authenticateUser(String email, String password) {
-        if (userRepository instanceof UserDAOImpl) {
-            return ((UserDAOImpl) userRepository).authenticateUser(email, password);
-        }
-        return Optional.empty();
+    @Override
+    public Optional<User> authenticate(String email, String password) {
+        return userRepository.authenticate(email, password);
+
     }
 }
-

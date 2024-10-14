@@ -1,6 +1,7 @@
 package kapyrin.myshop.dao.impl;
 
 import kapyrin.myshop.configuration.MyConnectionPool;
+import kapyrin.myshop.dao.DAOInterfaces.AuthenticateUser;
 import kapyrin.myshop.dao.DAOInterfaces.RepositoryWithOneParameterInSomeMethods;
 import kapyrin.myshop.entities.Role;
 import kapyrin.myshop.exception.entities.UserException;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public enum UserDAOImpl implements RepositoryWithOneParameterInSomeMethods<User> {
+public enum UserDAOImpl implements AuthenticateUser<User> {
     INSTANCE;
     private static final String ADD_USER = "INSERT INTO users (first_name, last_name, email, password, phone_number, address, role_id) VALUES (?, ?, ?, ?,?,?,?)";
     private static final String UPDATE_USER = "UPDATE users SET first_name = ?, last_name = ?, email = ?, password = ?, phone_number = ?, address = ?, role_id = ? WHERE id = ?";
@@ -129,8 +130,8 @@ public enum UserDAOImpl implements RepositoryWithOneParameterInSomeMethods<User>
         }
         return Optional.empty();
     }
-
-    public Optional<User> authenticateUser(String email, String password) {
+@Override
+    public Optional<User> authenticate(String email, String password) {
         logger.debug("Authenticating user with email : " + email);
         try (Connection connection = MyConnectionPool.INSTANCE.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(AUTHENTICATE_USER)) {

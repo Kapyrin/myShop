@@ -26,7 +26,7 @@ public class LoginServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        Optional<User> user = userService.authenticateUser(email, password);
+        Optional<User> user = userService.authenticate(email, password);
         if (user.isPresent()) {
             User userDB = user.get();
             String userRole = user.get().getRole().getUserRole();

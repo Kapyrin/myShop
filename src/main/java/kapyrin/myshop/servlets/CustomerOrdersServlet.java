@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import kapyrin.myshop.dao.impl.ShopOrderDAOImpl;
 import kapyrin.myshop.dao.impl.UserDAOImpl;
 import kapyrin.myshop.entities.ShopOrder;
@@ -27,18 +28,19 @@ public class CustomerOrdersServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User user = (User) request.getSession().getAttribute("user");
-        System.out.println(user);
+        HttpSession session = request.getSession();
+        User loggedInUser = (User) session.getAttribute("user");
 
-        if (user != null) {
-            Long userId = user.getId();
+        if (loggedInUser != null && loggedInUser.getRole().getUserRole().equals("customer")) {
+            Long userId = loggedInUser.getId();
+            System.out.println(userId);
             List<ShopOrder> orders = shopOrderService.getAllOrdersByUserId(userId);
 
-            request.setAttribute("user", user);
+            request.setAttribute("user", loggedInUser);
             request.setAttribute("orders", orders);
             request.getRequestDispatcher("jsp/userOrders.jsp").forward(request, response);
         } else {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User must be logged in.");
+            response.sendRedirect("index.html");
         }
     }
 
