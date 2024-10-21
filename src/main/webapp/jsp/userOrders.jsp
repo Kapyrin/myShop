@@ -19,7 +19,7 @@
 
 <h2>Your Orders</h2>
 
-<table>
+<table class="table table-bordered table-striped">
     <tr>
         <th>Order ID</th>
         <th>Date Creation</th>

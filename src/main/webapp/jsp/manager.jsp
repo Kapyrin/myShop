@@ -16,7 +16,7 @@
 <body>
 <h1>Users and orders:</h1>
 <br><br>
-<table>
+<table class="table table-bordered table-striped">
     <tr>
         <th>ID</th>
         <th>First Name</th>

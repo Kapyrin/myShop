@@ -39,7 +39,7 @@
 </c:if>
 
 <h2>All users</h2>
-<table>
+<table class="table table-bordered table-striped">
     <tr>
         <th>ID</th>
         <th>First Name</th>
