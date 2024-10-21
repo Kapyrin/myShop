@@ -1,7 +1,7 @@
 package kapyrin.myshop.servlets;
 
 import kapyrin.myshop.dao.impl.UserDAOImpl;
-import kapyrin.myshop.entities.User;
+import kapyrin.myshop.entity.User;
 import kapyrin.myshop.service.impl.UserServiceImpl;
 
 import jakarta.servlet.annotation.WebServlet;

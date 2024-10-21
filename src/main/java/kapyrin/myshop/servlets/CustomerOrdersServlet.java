@@ -8,8 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kapyrin.myshop.dao.impl.ShopOrderDAOImpl;
 import kapyrin.myshop.dao.impl.UserDAOImpl;
-import kapyrin.myshop.entities.ShopOrder;
-import kapyrin.myshop.entities.User;
+import kapyrin.myshop.entity.ShopOrder;
+import kapyrin.myshop.entity.User;
 import kapyrin.myshop.service.impl.ShopOrderServiceImpl;
 import kapyrin.myshop.service.impl.UserServiceImpl;
 

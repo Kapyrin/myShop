@@ -1,6 +1,5 @@
 package kapyrin.myshop.servlets;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,14 +7,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kapyrin.myshop.dao.impl.RoleDAOImpl;
 import kapyrin.myshop.dao.impl.UserDAOImpl;
-import kapyrin.myshop.entities.Role;
-import kapyrin.myshop.entities.User;
+import kapyrin.myshop.entity.User;
 import kapyrin.myshop.service.impl.RoleServiceImpl;
 import kapyrin.myshop.service.impl.UserServiceImpl;
 import kapyrin.myshop.servlets.util.UserRequestMapper;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @WebServlet("/createUser")
 public class CreateUserServlet extends HttpServlet {

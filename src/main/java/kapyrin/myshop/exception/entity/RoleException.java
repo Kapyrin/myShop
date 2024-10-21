@@ -1,4 +1,4 @@
-package kapyrin.myshop.exception.entities;
+package kapyrin.myshop.exception.entity;
 
 public class RoleException extends RuntimeException {
     public RoleException(String message) {

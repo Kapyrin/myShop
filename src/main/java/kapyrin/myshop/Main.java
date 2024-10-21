@@ -1,11 +1,11 @@
 package kapyrin.myshop;
 
 import kapyrin.myshop.dao.impl.*;
-import kapyrin.myshop.entities.*;
-import kapyrin.myshop.exception.entities.OrderStatusException;
-import kapyrin.myshop.exception.entities.ProductException;
-import kapyrin.myshop.exception.entities.RoleException;
-import kapyrin.myshop.exception.entities.UserException;
+import kapyrin.myshop.entity.*;
+import kapyrin.myshop.exception.entity.OrderStatusException;
+import kapyrin.myshop.exception.entity.ProductException;
+import kapyrin.myshop.exception.entity.RoleException;
+import kapyrin.myshop.exception.entity.UserException;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -178,16 +178,20 @@ public class Main {
             ShopOrder fromDB = SHOP_ORDER_DAO_IMPL.getById(1).orElseThrow(() -> new OrderStatusException("Order  not found"));
             System.out.println(fromDB);
             List<Product> productsFromDB = PRODUCT_DAO_IMPL.getAll();
-
             for (Product product : productsFromDB) {
+                ProductOrderKey productOrderKey = new ProductOrderKey();
+                productOrderKey.setOrderId(fromDB.getId());
+                productOrderKey.setProductId(product.getId());
+
                 ProductOrder productOrder = ProductOrder.builder()
+                        .id(productOrderKey)
                         .order(fromDB)
                         .product(product)
                         .quantity(3)
                         .build();
+
                 PRODUCT_ORDER_DAO_IMPL.add(productOrder);
             }
-
             List<ProductOrder> productOrders = PRODUCT_ORDER_DAO_IMPL.getAll();
             System.out.println("All products in order with:");
             for (ProductOrder productOrder : productOrders) {

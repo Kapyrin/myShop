@@ -1,4 +1,4 @@
-package kapyrin.myshop.exception.entities;
+package kapyrin.myshop.exception.entity;
 
 public class UserException extends RuntimeException {
     public UserException(String message) {

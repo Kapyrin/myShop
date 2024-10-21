@@ -1,18 +1,17 @@
 package kapyrin.myshop.service.impl;
 
-import kapyrin.myshop.dao.DAOInterfaces.RepositoryWithOneParameterInSomeMethods;
-import kapyrin.myshop.dao.impl.ShopOrderDAOImpl;
-import kapyrin.myshop.entities.ShopOrder;
-import kapyrin.myshop.service.ServiceWithOneParameterInSomeMethod;
+import kapyrin.myshop.dao.DAOInterface.RepositoryGetOrdersByUserId;
+import kapyrin.myshop.entity.ShopOrder;
+import kapyrin.myshop.service.ServiceGetOrdersByUserId;
 
 import java.util.List;
 import java.util.Optional;
 
-public enum ShopOrderServiceImpl implements ServiceWithOneParameterInSomeMethod<ShopOrder> {
+public enum ShopOrderServiceImpl implements ServiceGetOrdersByUserId<ShopOrder> {
     INSTANCE;
-    private RepositoryWithOneParameterInSomeMethods<ShopOrder> shopOrderRepository;
+    private RepositoryGetOrdersByUserId<ShopOrder> shopOrderRepository;
 
-    public ShopOrderServiceImpl initRepository(RepositoryWithOneParameterInSomeMethods<ShopOrder> shopOrderRepository) {
+    public ShopOrderServiceImpl initRepository(RepositoryGetOrdersByUserId<ShopOrder> shopOrderRepository) {
         this.shopOrderRepository = shopOrderRepository;
         return this;
     }
@@ -48,10 +47,9 @@ public enum ShopOrderServiceImpl implements ServiceWithOneParameterInSomeMethod<
         return shopOrderRepository.getAll();
     }
 
+    @Override
     public List<ShopOrder> getAllOrdersByUserId(long userId) {
-        if (shopOrderRepository instanceof ShopOrderDAOImpl) {
-            return ((ShopOrderDAOImpl) shopOrderRepository).getAllOrdersByUserId(userId);
-        }
-        return List.of();
+        return shopOrderRepository.getAllOrdersByUserId(userId);
+
     }
 }

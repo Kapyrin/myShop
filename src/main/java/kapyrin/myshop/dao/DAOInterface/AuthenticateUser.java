@@ -1,4 +1,4 @@
-package kapyrin.myshop.dao.DAOInterfaces;
+package kapyrin.myshop.dao.DAOInterface;
 
 import java.util.Optional;
 

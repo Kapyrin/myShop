@@ -1,8 +1,8 @@
 package kapyrin.myshop.service.impl;
 
 
-import kapyrin.myshop.dao.DAOInterfaces.AuthenticateUser;
-import kapyrin.myshop.entities.User;
+import kapyrin.myshop.dao.DAOInterface.AuthenticateUser;
+import kapyrin.myshop.entity.User;
 import kapyrin.myshop.service.ServiceAuthenticate;
 
 import java.util.List;

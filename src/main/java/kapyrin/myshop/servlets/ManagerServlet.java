@@ -7,8 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kapyrin.myshop.dao.impl.ShopOrderDAOImpl;
 import kapyrin.myshop.dao.impl.UserDAOImpl;
-import kapyrin.myshop.entities.ShopOrder;
-import kapyrin.myshop.entities.User;
+import kapyrin.myshop.entity.ShopOrder;
+import kapyrin.myshop.entity.User;
 import kapyrin.myshop.service.impl.ShopOrderServiceImpl;
 import kapyrin.myshop.service.impl.UserServiceImpl;
 
@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @WebServlet("/managers")
 public class ManagerServlet extends HttpServlet {

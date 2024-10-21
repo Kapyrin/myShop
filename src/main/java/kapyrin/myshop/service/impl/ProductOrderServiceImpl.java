@@ -1,7 +1,7 @@
 package kapyrin.myshop.service.impl;
 
-import kapyrin.myshop.dao.DAOInterfaces.RepositoryWithTwoParametersInSomeMethods;
-import kapyrin.myshop.entities.ProductOrder;
+import kapyrin.myshop.dao.DAOInterface.RepositoryWithTwoParametersInSomeMethods;
+import kapyrin.myshop.entity.ProductOrder;
 import kapyrin.myshop.service.ServiceWithTwoParameterInSomeMethod;
 
 import java.util.List;

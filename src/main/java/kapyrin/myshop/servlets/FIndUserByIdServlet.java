@@ -6,10 +6,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kapyrin.myshop.dao.impl.UserDAOImpl;
-import kapyrin.myshop.entities.User;
+import kapyrin.myshop.entity.User;
 import kapyrin.myshop.service.impl.UserServiceImpl;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @WebServlet("/findUserById")
@@ -30,7 +31,12 @@ public class FIndUserByIdServlet extends HttpServlet {
             req.setAttribute("foundUser", foundUser.get());
         } else {
             req.setAttribute("errorMessage", "User not found");
+
         }
+
+        List<User> users = userService.getAll();
+        req.setAttribute("users", users);
+
         req.getRequestDispatcher("/jsp/admin.jsp").forward(req, resp);
 
     }

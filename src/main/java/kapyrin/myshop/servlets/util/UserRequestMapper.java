@@ -1,9 +1,9 @@
 package kapyrin.myshop.servlets.util;
 
 import jakarta.servlet.http.HttpServletRequest;
-import kapyrin.myshop.entities.User;
-import kapyrin.myshop.entities.Role;
-import kapyrin.myshop.exception.entities.RoleException;
+import kapyrin.myshop.entity.User;
+import kapyrin.myshop.entity.Role;
+import kapyrin.myshop.exception.entity.RoleException;
 import kapyrin.myshop.service.impl.RoleServiceImpl;
 
 public enum UserRequestMapper {

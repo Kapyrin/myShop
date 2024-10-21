@@ -1,43 +1,34 @@
 package kapyrin.myshop.dao.impl;
 
-import kapyrin.myshop.configuration.MyConnectionPool;
+import kapyrin.myshop.configuration.MyHibernateConfiguration;
+import kapyrin.myshop.dao.DAOInterface.RepositoryWithOneParameterInSomeMethods;
+import kapyrin.myshop.entity.OrderStatus;
+import kapyrin.myshop.exception.entity.OrderStatusException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import kapyrin.myshop.dao.DAOInterfaces.RepositoryWithOneParameterInSomeMethods;
-import kapyrin.myshop.entities.OrderStatus;
-import kapyrin.myshop.exception.entities.OrderStatusException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 public enum OrderStatusDAOImp implements RepositoryWithOneParameterInSomeMethods<OrderStatus> {
     INSTANCE;
-    private static final String ADD_ORDER_STATUS = "INSERT INTO order_status(status_name) VALUES (?)";
-    private static final String UPDATE_ORDER_STATUS = "UPDATE order_status SET status_name = ? WHERE id = ?";
-    private static final String DELETE_ORDER_STATUS = "DELETE FROM order_status WHERE id = ?";
-    private static final String SELECT_ORDER_STATUS_BY_ID = "SELECT * FROM order_status WHERE id = ?";
-    private static final String SELECT_ALL_ORDER_STATUS = "SELECT * FROM order_status";
 
     private static final Logger logger = LogManager.getLogger(OrderStatusDAOImp.class);
 
-    private static final String DB_ID = "id";
-    private static final String DB_STATUS = "status_name";
 
     @Override
     public void add(OrderStatus status) {
+        Transaction transaction = null;
         logger.debug("Adding order status " + status.getStatusName());
-        try (Connection connection = MyConnectionPool.INSTANCE.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(ADD_ORDER_STATUS)) {
-            preparedStatement.setString(1, status.getStatusName());
-            preparedStatement.executeUpdate();
+        try (Session session = MyHibernateConfiguration.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.save(status);
+            transaction.commit();
             logger.debug("Order status added");
-        } catch (SQLException e) {
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
             logger.error(e);
             throw new OrderStatusException("Failed to add order status " + status.getStatusName(), e);
         }
@@ -45,14 +36,15 @@ public enum OrderStatusDAOImp implements RepositoryWithOneParameterInSomeMethods
 
     @Override
     public void update(OrderStatus status) {
+        Transaction transaction = null;
         logger.debug("Updating order status " + status.getStatusName());
-        try (Connection connection = MyConnectionPool.INSTANCE.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ORDER_STATUS)) {
-            preparedStatement.setString(1, status.getStatusName());
-            preparedStatement.setLong(2, status.getId());
-            preparedStatement.executeUpdate();
+        try (Session session = MyHibernateConfiguration.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.update(status);
+            transaction.commit();
             logger.info("Order status " + status.getStatusName() + " updated");
-        } catch (SQLException e) {
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
             logger.error(e);
             throw new OrderStatusException("Failed to update order status " + status.getStatusName(), e);
         }
@@ -60,13 +52,20 @@ public enum OrderStatusDAOImp implements RepositoryWithOneParameterInSomeMethods
 
     @Override
     public void deleteById(long id) {
+        Transaction transaction = null;
         logger.debug("Deleting order status " + id);
-        try (Connection connection = MyConnectionPool.INSTANCE.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_ORDER_STATUS)) {
-            preparedStatement.setLong(1, id);
-            preparedStatement.executeUpdate();
-            logger.info("Order status " + id + " has been deleted");
-        } catch (SQLException e) {
+        try (Session session = MyHibernateConfiguration.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            OrderStatus status = session.get(OrderStatus.class, id);
+            if (status != null) {
+                session.delete(status);
+                logger.info("Order status " + id + " has been deleted");
+            } else {
+                logger.warn("Order status with id " + id + " not found");
+            }
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
             logger.error(e);
             throw new OrderStatusException("Failed to delete order status " + id, e);
         }
@@ -87,44 +86,33 @@ public enum OrderStatusDAOImp implements RepositoryWithOneParameterInSomeMethods
     @Override
     public List<OrderStatus> getAll() {
         logger.debug("Getting all order status ");
-        List<OrderStatus> orderStatuses = new ArrayList<>();
-        try (Connection connection = MyConnectionPool.INSTANCE.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_ORDER_STATUS);
-             ResultSet set = preparedStatement.executeQuery()) {
-            while (set.next()) {
-                orderStatuses.add(createOrderStatusFromResultSet(set));
-            }
+        try (Session session = MyHibernateConfiguration.getSessionFactory().openSession()) {
+
+            List<OrderStatus> orderStatuses = session.createQuery("from OrderStatus", OrderStatus.class).list();
+
             logger.info("Retrieved all order statuses");
-        } catch (SQLException e) {
+            return orderStatuses;
+        } catch (Exception e) {
             logger.error(e);
             throw new OrderStatusException("Failed to retrieve order statuses", e);
         }
-        return orderStatuses;
     }
 
     @Override
     public Optional<OrderStatus> getById(long id) {
         logger.debug("Getting order status with id " + id);
-        try (Connection connection = MyConnectionPool.INSTANCE.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ORDER_STATUS_BY_ID)) {
-            preparedStatement.setLong(1, id);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    return Optional.of(createOrderStatusFromResultSet(resultSet));
-                }
+        try (Session session = MyHibernateConfiguration.getSessionFactory().openSession()) {
+            OrderStatus status = session.get(OrderStatus.class, id);
+            if (status != null) {
+                logger.info("Retrieved order status with id " + id);
+                return Optional.of(status);
+
             }
-            logger.info("Retrieved order status with id " + id);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             logger.error(e);
             throw new OrderStatusException("Failed to retrieve order status with id " + id, e);
         }
         return Optional.empty();
     }
-
-    private OrderStatus createOrderStatusFromResultSet(ResultSet resultSet) throws SQLException {
-        return OrderStatus.builder()
-                .id(resultSet.getLong(DB_ID))
-                .statusName(resultSet.getString(DB_STATUS))
-                .build();
-    }
 }
+

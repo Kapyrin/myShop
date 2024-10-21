@@ -1,4 +1,4 @@
-package kapyrin.myshop.exception.entities;
+package kapyrin.myshop.exception.entity;
 
 public class ProductOrderException extends RuntimeException {
     public ProductOrderException(String message) {
