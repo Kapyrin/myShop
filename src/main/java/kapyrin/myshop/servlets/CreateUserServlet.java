@@ -47,7 +47,7 @@ public class CreateUserServlet extends HttpServlet {
             case "customer":
                 return "/customerOrders";
             default:
-                return "/index.html";
+                return "/index.jsp";
         }
     }
 }

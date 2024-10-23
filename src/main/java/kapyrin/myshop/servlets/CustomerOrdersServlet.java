@@ -28,7 +28,7 @@ public class CustomerOrdersServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
+               HttpSession session = request.getSession();
         User loggedInUser = (User) session.getAttribute("user");
 
         if (loggedInUser != null && loggedInUser.getRole().getUserRole().equals("customer")) {
@@ -40,7 +40,7 @@ public class CustomerOrdersServlet extends HttpServlet {
             request.setAttribute("orders", orders);
             request.getRequestDispatcher("jsp/userOrders.jsp").forward(request, response);
         } else {
-            response.sendRedirect("index.html");
+            response.sendRedirect("index.jsp");
         }
     }
 

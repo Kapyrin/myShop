@@ -14,6 +14,8 @@
 
 </head>
 <body>
+<jsp:include page="/jsp/languageSwitch.jsp"/>
+<br><br>
 <h1>User Details</h1>
 <c:if test="${not empty user}">
     <p>ID: ${user.id}</p>

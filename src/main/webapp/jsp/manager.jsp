@@ -7,23 +7,29 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${sessionScope.lang}" />
+<fmt:setBundle basename="/language/manager" />
 <html>
 <head>
-    <title>Список пользователей</title>
+    <title><fmt:message key="managers.title"/></title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
 </head>
 <body>
-<h1>Users and orders:</h1>
+<jsp:include page="/jsp/languageSwitch.jsp"/>
+<br><br>
+<h1><fmt:message key="manager.greetings"/></h1>
 <br><br>
 <table class="table table-bordered table-striped">
     <tr>
-        <th>ID</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>email</th>
-        <th>telephone</th>
-        <th>Orders</th>
+        <th><fmt:message key="manager.id"/> </th>
+        <th><fmt:message key="manager.first_name"/></th>
+        <th><fmt:message key="manager.last_name"/></th>
+        <th><fmt:message key="manager.email"/></th>
+        <th><fmt:message key="manager.phone"/></th>
+        <th><fmt:message key="manager.orders"/></th>
     </tr>
     <c:forEach var="user" items="${users}">
         <tr>

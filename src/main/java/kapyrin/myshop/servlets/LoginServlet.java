@@ -44,7 +44,7 @@ public class LoginServlet extends HttpServlet {
                     response.sendRedirect("customerOrders");
                     break;
                 default:
-                    response.sendRedirect("index.html");
+                    response.sendRedirect("index.jsp");
                     break;
             }
         } else {

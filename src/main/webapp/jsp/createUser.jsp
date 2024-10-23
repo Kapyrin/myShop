@@ -13,6 +13,8 @@
 
 </head>
 <body>
+<jsp:include page="/jsp/languageSwitch.jsp"/>
+<br><br>
 <h1>Create User</h1>
 <form action="${pageContext.request.contextPath}/createUser" method="post">
     <label for="firstName">First name:</label>

@@ -32,7 +32,7 @@ public class GetAllUsersServlet extends HttpServlet {
             request.setAttribute("users", users);
             request.getRequestDispatcher("jsp/admin.jsp").forward(request, response);
         } else {
-            response.sendRedirect("index.html");
+            response.sendRedirect("index.jsp");
         }
     }
 }
