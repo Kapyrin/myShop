@@ -11,7 +11,7 @@ import kapyrin.myshop.entity.User;
 
 import java.io.IOException;
 
-@WebFilter("/customerOrders")
+@WebFilter(urlPatterns = {"/customerOrders", "/createOrder" })
 public class CustomerFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {

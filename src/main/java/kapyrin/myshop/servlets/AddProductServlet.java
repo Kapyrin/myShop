@@ -10,31 +10,31 @@ import kapyrin.myshop.entity.Product;
 import kapyrin.myshop.service.impl.ProductServiceImpl;
 
 import java.io.IOException;
-import java.util.List;
-
-@WebServlet("/products")
-public class ProductServlet extends HttpServlet {
+@WebServlet("/addProduct")
+public class AddProductServlet extends HttpServlet {
     private ProductServiceImpl productService;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         productService = ProductServiceImpl.INSTANCE.initRepository(ProductDAOImpl.INSTANCE);
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Product> products = productService.getAll();
-        req.setAttribute("products", products);
-        req.getRequestDispatcher("/jsp/productManagement.jsp").forward(req, resp);
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String name = req.getParameter("productName");
+        String description = req.getParameter("productDescription");
+        Double price = Double.parseDouble(req.getParameter("productPrice"));
+        int quantity = Integer.parseInt(req.getParameter("productQuantity"));
+        productService.add(Product.builder()
+                .productName(name)
+                .productDescription(description)
+                .price(price)
+                .productRemain(quantity)
+                .build()
+        );
+        resp.sendRedirect("/products");
+
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action = req.getParameter("action");
-        if ("delete".equals(action)) {
-            Long productId = Long.parseLong(req.getParameter("productId"));
-            productService.deleteById(productId);
-        }
-        resp.sendRedirect("/products");
-    }
 }
+

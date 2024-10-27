@@ -41,7 +41,7 @@
         <option value="manager">Manager</option>
         <option value="customer">Customer</option>
     </select><br><br>
-    <input type="submit" value="Create User">
+    <input type="submit" class="btn btn-success" value="Create User">
 </form>
 
 </body>

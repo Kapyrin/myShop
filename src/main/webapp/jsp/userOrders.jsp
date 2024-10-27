@@ -44,6 +44,7 @@
         </tr>
     </c:forEach>
 </table>
-
+<br><br>
+<a href="/createOrder"> <fmt:message key="orders.create"/></a>
 </body>
 </html>

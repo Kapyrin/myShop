@@ -48,5 +48,8 @@
         </tr>
     </c:forEach>
   </table>
+<br>
+<a href="/products"> <fmt:message key="manager.product_management"/>
+</a>
 </body>
 </html>

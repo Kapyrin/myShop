@@ -11,7 +11,7 @@ import kapyrin.myshop.entity.User;
 
 import java.io.IOException;
 
-@WebFilter("/managers")
+@WebFilter(urlPatterns = {"/editProduct", "/managers", "/addProduct", "/products"})
 public class ManagerFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {

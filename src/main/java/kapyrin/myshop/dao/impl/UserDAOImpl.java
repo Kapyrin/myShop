@@ -111,24 +111,18 @@ public enum UserDAOImpl implements AuthenticateUser<User> {
         }
         return Optional.empty();
     }
-
     @Override
     public Optional<User> authenticate(String email, String password) {
         logger.debug("Authenticating user with email: " + email);
         try (Session session = MyHibernateConfiguration.getSessionFactory().openSession()) {
-
-            User user = session.createQuery("FROM User WHERE email = :email AND password = :password", User.class)
+            return Optional.ofNullable(session.createQuery("FROM User WHERE email = :email AND password = :password", User.class)
                     .setParameter("email", email)
                     .setParameter("password", password)
-                    .getSingleResult();
-            if (user != null) {
-                return Optional.of(user);
-            }
+                    .getSingleResult());
         } catch (Exception e) {
-            logger.error(e);
-            throw new UserException("Failed to authenticate user with email: " + email, e);
+            logger.info("Authentication failed for email: " + email);
+            return Optional.empty();
         }
-        return Optional.empty();
     }
 
 }

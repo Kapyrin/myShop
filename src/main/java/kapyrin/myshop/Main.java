@@ -24,6 +24,7 @@ public class Main {
     public static void main(String[] args) {
 
         try {
+
             ROLE_DAO_IMPL.add(Role.builder().userRole("admin").build());
             ROLE_DAO_IMPL.add(Role.builder().userRole("manager").build());
             ROLE_DAO_IMPL.add(Role.builder().userRole("customer").build());
@@ -125,6 +126,13 @@ public class Main {
                     .productDescription("Powered by Intel")
                     .price(30000.0)
                     .productRemain(50)
+                    .build());
+
+            PRODUCT_DAO_IMPL.add(Product.builder()
+                    .productName("Delete test product")
+                    .productDescription("Product for delete")
+                    .price(1000.0)
+                    .productRemain(150)
                     .build());
 
             PRODUCT_DAO_IMPL.add(monitorAcer);

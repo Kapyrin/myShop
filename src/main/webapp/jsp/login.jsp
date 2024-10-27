@@ -31,15 +31,15 @@
         session.removeAttribute("errorMessage");
     }
 %>
-
+<br>
 <form action="/login" method="post">
-    <b><fmt:message key="login.greetings"/></b>
-    <br><br>
+    <h2><fmt:message key="login.greetings"/></h2>
+    <br>
     <label for="email"><fmt:message key="login.email"/>:</label>
     <input type="text" id="email" name="email"><br><br>
     <label for="password"> <fmt:message key="login.password"/>:</label>
     <input type="password" id="password" name="password"><br><br>
-    <input type="submit" value=<fmt:message key="login.button"/>>
+    <input type="submit" class="btn btn-success" value=<fmt:message key="login.button"/>>
 </form>
 </body>
 </html>

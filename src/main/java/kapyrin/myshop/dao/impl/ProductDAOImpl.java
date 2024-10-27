@@ -62,6 +62,7 @@ public enum ProductDAOImpl implements RepositoryWithOneParameterInSomeMethods<Pr
             if (product != null) {
                 session.delete(product);
                 logger.info("The product with id: " + id + " has been deleted successfully");
+                transaction.commit();
             } else
                 logger.warn("The product with id: " + id + " does not exist");
         } catch (Exception e) {

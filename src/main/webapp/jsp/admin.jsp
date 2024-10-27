@@ -24,6 +24,7 @@
 <br><br>
 
 <h1><fmt:message key="admin.greetings"/></h1>
+<br><br>
 
 <h2><fmt:message key="admin.find_user"/></h2>
 <form action="/findUserById" method="GET">
@@ -70,11 +71,11 @@
             <td>
                 <form action="/deleteUser" method="get" style="display:inline;">
                     <input type="hidden" name="userId" value="${user.id}"/>
-                    <button type="submit"><fmt:message key="admin.delete_user"/></button>
+                    <button type="submit" class="btn btn-danger"><fmt:message key="admin.delete_user"/></button>
                 </form>
                 <form action="/editUser" method="GET" style="display:inline;">
                     <input type="hidden" name="userId" value="${user.id}"/>
-                    <button type="submit"><fmt:message key="admin.update_user"/></button>
+                    <button type="submit" class="btn btn-secondary"><fmt:message key="admin.update_user"/></button>
                 </form>
             </td>
         </tr>
