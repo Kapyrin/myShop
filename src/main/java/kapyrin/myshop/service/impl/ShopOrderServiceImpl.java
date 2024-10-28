@@ -1,17 +1,18 @@
 package kapyrin.myshop.service.impl;
 
-import kapyrin.myshop.dao.DAOInterface.RepositoryGetOrdersByUserId;
+import kapyrin.myshop.dao.DAOInterface.ShopOrderRepository;
 import kapyrin.myshop.entity.ShopOrder;
-import kapyrin.myshop.service.ServiceGetOrdersByUserId;
+import kapyrin.myshop.service.ServiceShopOrder;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
-public enum ShopOrderServiceImpl implements ServiceGetOrdersByUserId<ShopOrder> {
+public enum ShopOrderServiceImpl implements ServiceShopOrder<ShopOrder> {
     INSTANCE;
-    private RepositoryGetOrdersByUserId<ShopOrder> shopOrderRepository;
+    private ShopOrderRepository<ShopOrder> shopOrderRepository;
 
-    public ShopOrderServiceImpl initRepository(RepositoryGetOrdersByUserId<ShopOrder> shopOrderRepository) {
+    public ShopOrderServiceImpl initRepository(ShopOrderRepository<ShopOrder> shopOrderRepository) {
         this.shopOrderRepository = shopOrderRepository;
         return this;
     }
@@ -51,5 +52,26 @@ public enum ShopOrderServiceImpl implements ServiceGetOrdersByUserId<ShopOrder> 
     public List<ShopOrder> getAllOrdersByUserId(long userId) {
         return shopOrderRepository.getAllOrdersByUserId(userId);
 
+    }
+
+    @Override
+    public List<ShopOrder> getOrdersByProductId(Long productId) {
+        return shopOrderRepository.getOrdersByProductId(productId);
+    }
+
+    @Override
+    public void deleteOrdersBeforeDate(Date date) {
+        shopOrderRepository.deleteOrdersBeforeDate(date);
+
+    }
+
+    @Override
+    public void closeOrder(long orderId) {
+        shopOrderRepository.closeOrder(orderId);
+    }
+
+    @Override
+    public void updateOrderStatus(long orderId, long statusId) {
+        shopOrderRepository.updateOrderStatus(orderId, statusId);
     }
 }

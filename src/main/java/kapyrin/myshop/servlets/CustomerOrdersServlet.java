@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import kapyrin.myshop.dao.impl.ShopOrderDAOImpl;
+import kapyrin.myshop.dao.impl.ShopOrderOrderDAOImpl;
 import kapyrin.myshop.dao.impl.UserDAOImpl;
 import kapyrin.myshop.entity.ShopOrder;
 import kapyrin.myshop.entity.User;
@@ -24,7 +24,7 @@ public class CustomerOrdersServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         userService = UserServiceImpl.INSTANCE.initRepository(UserDAOImpl.INSTANCE);
-        shopOrderService = ShopOrderServiceImpl.INSTANCE.initRepository(ShopOrderDAOImpl.INSTANCE);
+        shopOrderService = ShopOrderServiceImpl.INSTANCE.initRepository(ShopOrderOrderDAOImpl.INSTANCE);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

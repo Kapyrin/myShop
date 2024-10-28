@@ -20,7 +20,7 @@
 </head>
 
 <body>
-<jsp:include page="/jsp/languageSwitch.jsp"/>
+<jsp:include page="/jsp/header.jsp"/>
 <br><br>
 
 <h1><fmt:message key="admin.greetings"/></h1>

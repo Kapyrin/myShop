@@ -21,7 +21,7 @@
           crossorigin="anonymous">
 </head>
 <body>
-<jsp:include page="/jsp/languageSwitch.jsp"/>
+<jsp:include page="/jsp/header.jsp"/>
 <br><br>
 
 <h1><fmt:message key="product.edit.heading"/></h1>

@@ -1,6 +1,7 @@
 package kapyrin.myshop.dao.impl;
 
 import kapyrin.myshop.configuration.MyHibernateConfiguration;
+import kapyrin.myshop.dao.DAOInterface.ProductOrderRepository;
 import kapyrin.myshop.dao.DAOInterface.RepositoryWithTwoParametersInSomeMethods;
 import kapyrin.myshop.entity.Product;
 import kapyrin.myshop.entity.ProductOrder;
@@ -15,8 +16,9 @@ import org.hibernate.Transaction;
 import java.util.List;
 import java.util.Optional;
 
-public enum ProductOrderDaoImpl implements RepositoryWithTwoParametersInSomeMethods<ProductOrder> {
+public enum ProductOrderDaoImpl implements ProductOrderRepository<ProductOrder> {
     INSTANCE;
+    private static final String GET_ALL_PRODUCTS_FROM_PRODUCT_ORDER = "SELECT po.product FROM ProductOrder po WHERE po.id.orderId = :orderId";
 
     private static final Logger logger = LogManager.getLogger(ProductOrderDaoImpl.class);
 
@@ -42,8 +44,8 @@ public enum ProductOrderDaoImpl implements RepositoryWithTwoParametersInSomeMeth
             transaction.commit();
             logger.info("Successfully added product order and updated product quantity");
         } catch (Exception e) {
-            if (transaction != null && transaction.getStatus().canRollback());
-                logger.error(e);
+            if (transaction != null && transaction.getStatus().canRollback()) ;
+            logger.error(e);
             throw new ProductOrderException("Failed to add product order", e);
         }
     }
@@ -123,6 +125,18 @@ public enum ProductOrderDaoImpl implements RepositoryWithTwoParametersInSomeMeth
         } catch (Exception e) {
             logger.error(e);
             throw new ProductOrderException("Failed to get product order", e);
+        }
+    }
+
+    @Override
+    public List<Product> productFromProductOrder(long productOrderId) {
+        try (Session session = MyHibernateConfiguration.INSTANCE.getSessionFactory().openSession()) {
+            return session.createQuery(GET_ALL_PRODUCTS_FROM_PRODUCT_ORDER, Product.class)
+                    .setParameter("orderId", productOrderId)
+                    .getResultList();
+        }catch (Exception e) {
+            logger.error(e);
+            throw new ProductOrderException("Error retrieving products for ProductOrder ID: " + productOrderId, e);
         }
     }
 }

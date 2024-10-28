@@ -20,7 +20,7 @@
 
 </head>
 <body>
-<jsp:include page="/jsp/languageSwitch.jsp"/>
+<jsp:include page="/jsp/header.jsp"/>
 <br><br>
 <h1><fmt:message key="orders.helloUser"/> ${user.firstName} ${user.lastName}</h1>
 
@@ -45,6 +45,6 @@
     </c:forEach>
 </table>
 <br><br>
-<a href="/createOrder"> <fmt:message key="orders.create"/></a>
+<a href="/createOrder" class="btn btn-dark"> <fmt:message key="orders.create"/></a>
 </body>
 </html>

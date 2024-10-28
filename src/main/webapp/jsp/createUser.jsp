@@ -13,7 +13,7 @@
 
 </head>
 <body>
-<jsp:include page="/jsp/languageSwitch.jsp"/>
+<jsp:include page="/jsp/header.jsp"/>
 <br><br>
 <h1>Create User</h1>
 <form action="${pageContext.request.contextPath}/createUser" method="post">

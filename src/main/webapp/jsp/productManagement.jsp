@@ -18,7 +18,7 @@
     <title><fmt:message key="product.title"/></title>
 </head>
 <body>
-<jsp:include page="/jsp/languageSwitch.jsp"/>
+<jsp:include page="/jsp/header.jsp"/>
 <br>
 
 <H1><fmt:message key="product.greeting"/></H1>
