@@ -74,4 +74,5 @@ public enum ShopOrderServiceImpl implements ServiceShopOrder<ShopOrder> {
     public void updateOrderStatus(long orderId, long statusId) {
         shopOrderRepository.updateOrderStatus(orderId, statusId);
     }
+
 }

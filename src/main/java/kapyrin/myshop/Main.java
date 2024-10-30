@@ -4,7 +4,9 @@ import kapyrin.myshop.dao.impl.*;
 import kapyrin.myshop.entity.*;
 import kapyrin.myshop.exception.entity.RoleException;
 import kapyrin.myshop.exception.entity.UserException;
-import kapyrin.myshop.service.impl.ShopOrderServiceImpl;
+import kapyrin.myshop.service.impl.UserServiceImpl;
+import kapyrin.myshop.servlets.util.ReportWriter;
+import kapyrin.myshop.servlets.util.ReportStringGenerator;
 
 import java.util.List;
 
@@ -13,13 +15,14 @@ public class Main {
     private static final UserDAOImpl USER_DAO_IMPL = UserDAOImpl.INSTANCE;
     private static final ProductDAOImpl PRODUCT_DAO_IMPL = ProductDAOImpl.INSTANCE;
     private static final OrderStatusDAOImp ORDER_STATUS_DAO_IMPL = OrderStatusDAOImp.INSTANCE;
-    private static final ShopOrderOrderDAOImpl SHOP_ORDER_DAO_IMPL = ShopOrderOrderDAOImpl.INSTANCE;
+    private static final ShopOrderDAOImpl SHOP_ORDER_DAO_IMPL = ShopOrderDAOImpl.INSTANCE;
     private static final ProductOrderDaoImpl PRODUCT_ORDER_DAO_IMPL = ProductOrderDaoImpl.INSTANCE;
 
     public static void main(String[] args) {
-
+        UserServiceImpl userServiceImpl;
+        userServiceImpl = UserServiceImpl.INSTANCE.initRepository(UserDAOImpl.INSTANCE);
         try {
-
+//
 //            ROLE_DAO_IMPL.add(Role.builder().userRole("admin").build());
 //            ROLE_DAO_IMPL.add(Role.builder().userRole("manager").build());
 //            ROLE_DAO_IMPL.add(Role.builder().userRole("customer").build());
@@ -200,11 +203,13 @@ public class Main {
 //            for (ProductOrder productOrder : productOrders) {
 //                System.out.println("The product: " + productOrder.getProduct().getProductName());
 //            }
-            List<ShopOrder> orders = ShopOrderServiceImpl.INSTANCE.initRepository(SHOP_ORDER_DAO_IMPL.INSTANCE).getOrdersByProductId(1L);
-            for (ShopOrder shopOrder : orders) {
-                System.out.println(shopOrder);
-            }
-
+//            List<ShopOrder> orders = ShopOrderServiceImpl.INSTANCE.initRepository(SHOP_ORDER_DAO_IMPL.INSTANCE).getOrdersByProductId(1L);
+//            for (ShopOrder shopOrder : orders) {
+//                System.out.println(shopOrder);
+//            }
+            List<User> userList = userServiceImpl.getAll();
+            String users = ReportStringGenerator.INSTANCE.fromUserList(userList);
+            ReportWriter.INSTANCE.saveStringToFile(users,"userReport");
         } catch (RoleException | UserException e) {
             e.printStackTrace();
         }

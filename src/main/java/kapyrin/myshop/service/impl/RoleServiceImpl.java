@@ -1,18 +1,17 @@
 package kapyrin.myshop.service.impl;
 
-import kapyrin.myshop.dao.DAOInterface.RepositoryWithOneParameterInSomeMethods;
-import kapyrin.myshop.dao.impl.RoleDAOImpl;
+import kapyrin.myshop.dao.DAOInterface.RoleDaoRepository;
 import kapyrin.myshop.entity.Role;
-import kapyrin.myshop.service.ServiceWithOneParameterInSomeMethod;
+import kapyrin.myshop.service.ServiceRole;
 
 import java.util.List;
 import java.util.Optional;
 
-public enum RoleServiceImpl implements ServiceWithOneParameterInSomeMethod<Role> {
+public enum RoleServiceImpl implements ServiceRole<Role> {
     INSTANCE;
-    private RepositoryWithOneParameterInSomeMethods roleRepository;
+    private RoleDaoRepository roleRepository;
 
-    public RoleServiceImpl initRepository(RepositoryWithOneParameterInSomeMethods<Role> repository) {
+    public RoleServiceImpl initRepository(RoleDaoRepository<Role> repository) {
         this.roleRepository = repository;
         return this;
     }
@@ -49,9 +48,7 @@ public enum RoleServiceImpl implements ServiceWithOneParameterInSomeMethod<Role>
     }
 
     public Optional<Role> getByRoleName(String name) {
-        if (roleRepository instanceof RoleDAOImpl) {
-            return ((RoleDAOImpl) roleRepository).getByRoleName(name);
-        }
-        return Optional.empty();
+        return roleRepository.getByRoleName(name);
+
     }
 }

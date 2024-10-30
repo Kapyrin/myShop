@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kapyrin.myshop.dao.impl.ProductDAOImpl;
 import kapyrin.myshop.entity.Product;
+import kapyrin.myshop.exception.entity.ProductException;
 import kapyrin.myshop.service.impl.ProductServiceImpl;
 
 import java.io.IOException;
@@ -33,7 +34,13 @@ public class ProductServlet extends HttpServlet {
         String action = req.getParameter("action");
         if ("delete".equals(action)) {
             Long productId = Long.parseLong(req.getParameter("productId"));
-            productService.deleteById(productId);
+            try {
+                productService.deleteById(productId);
+            } catch (ProductException e) {
+                req.setAttribute("errorMessage", e.getMessage());
+                doGet(req, resp);
+                return;
+            }
         }
         resp.sendRedirect("/products");
     }

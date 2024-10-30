@@ -8,12 +8,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<fmt:setLocale value="${sessionScope.lang}" />
-<fmt:setBundle basename="/language/product" />
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="/language/product"/>
 <html>
 <head>
-    <title><fmt:message key="product.title"/> </title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title><fmt:message key="product.title"/></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
 </head>
 <jsp:include page="/jsp/header.jsp"/>
@@ -21,7 +22,7 @@
 
 
 <body>
-<h2><fmt:message key="product.title"/> </h2>
+<h2><fmt:message key="product.title"/></h2>
 <br><br>
 <form action="/addProduct" method="post">
     <label for="productName"><fmt:message key="product.name"/></label>
@@ -36,7 +37,9 @@
     <label for="quantity"><fmt:message key="product.remain"/></label>
     <input type="number" id="quantity" name="productQuantity" required><br><br>
 
-    <input type="submit" value="<fmt:message key="product.add"/>">
+    <button type="submit" class="btn btn-info">
+        <fmt:message key="product.add"/>
+    </button>
 </form>
 </body>
 </html>

@@ -18,13 +18,12 @@ import java.util.Optional;
 @WebServlet("/editUser")
 public class EditUserServlet extends HttpServlet {
     private UserServiceImpl userService;
-    private RoleServiceImpl roleService;
 
     @Override
     public void init() {
         userService = UserServiceImpl.INSTANCE.initRepository(UserDAOImpl.INSTANCE);
-        roleService = RoleServiceImpl.INSTANCE.initRepository(RoleDAOImpl.INSTANCE);
-    }
+        UserRequestMapper.INSTANCE.init(RoleServiceImpl.INSTANCE.initRepository(RoleDAOImpl.INSTANCE));
+       }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

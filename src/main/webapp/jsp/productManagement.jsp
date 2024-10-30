@@ -26,6 +26,11 @@
 
 <h2><fmt:message key="product.available"/></h2>
 <br>
+<c:if test="${not empty errorMessage}">
+    <div class="alert alert-danger" role="alert">
+            ${errorMessage}
+    </div>
+</c:if>
 
 <table class="table table-bordered table-striped">
     <tr>

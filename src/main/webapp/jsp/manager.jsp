@@ -47,6 +47,8 @@
                 <button type="submit" name="action" value="filterByProduct" class="btn btn-primary">
                     <fmt:message key="manager.filter_by_product" bundle="${managerLanguage}"/>
                 </button>
+
+
             </form>
 
             <c:if test="${not empty filteredOrders}">
@@ -99,9 +101,7 @@
                 </table>
             </c:if>
 
-
             <br><br>
-
             <form action="/managers" method="post">
                 <div class="form-group">
                     <label for="deleteBeforeDate"><fmt:message key="manager.delete_before_date"
@@ -114,7 +114,13 @@
             </form>
         </div>
         <div class="col-md-6">
-            <h2><fmt:message key="manager.greetings" bundle="${managerLanguage}"/></h2>
+            <h2><fmt:message key="manager.greetings" bundle="${managerLanguage}"/>
+                <form action="/report" method="get" class="float-right">
+                    <input type="hidden" name="reportType" value="usersOrders"/>
+                    <button type="submit" class="tn-secondary btn-sm"><fmt:message key="manager.download_report"
+                                                                                       bundle="${managerLanguage}"/></button>
+                </form>
+            </h2>
             <table class="table table-bordered table-striped">
                 <tr>
                     <th><fmt:message key="manager.id" bundle="${managerLanguage}"/></th>
@@ -167,6 +173,7 @@
                     </tr>
                 </c:forEach>
             </table>
+
         </div>
     </div>
 </div>

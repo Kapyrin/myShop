@@ -6,36 +6,40 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<fmt:setLocale value="${sessionScope.lang}" />
+<fmt:setBundle basename="/language/admin" />
 <html>
 <head>
-    <title>Create User</title>
+    <title><fmt:message key="admin.create_user"/></title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
 </head>
 <body>
 <jsp:include page="/jsp/header.jsp"/>
 <br><br>
-<h1>Create User</h1>
+<h1><fmt:message key="admin.create_user"/></h1>
 <form action="${pageContext.request.contextPath}/createUser" method="post">
-    <label for="firstName">First name:</label>
+    <label for="firstName"><fmt:message key="admin.user_firs_name"/></label>
     <input type="text" id="firstName" name="firstName">
     <br><br>
-    <label for="lastName">Last name:</label>
+    <label for="lastName"><fmt:message key="admin.user_last_name"/></label>
     <input type="text" id="lastName" name="lastName">
     <br><br>
-       <label for="email">Email:</label>
+       <label for="email"><fmt:message key="admin.user_email"/></label>
     <input type="text" id="email" name="email">
     <br><br>
-    <label for="password">Password:</label>
+    <label for="password"><fmt:message key="admin.user_password"/></label>
     <input type="password" id="password" name="password">
     <br><br>
-    <label for="phoneNumber">Phone number:</label>
+    <label for="phoneNumber"><fmt:message key="admin.user_phone"/></label>
     <input type="text" id="phoneNumber" name="phoneNumber">
     <br><br>
-    <label for="address">Address:</label>
+    <label for="address"><fmt:message key="admin.user_address"/></label>
     <input type="text" id="address" name="address">
     <br><br>
-    <label for="role">Role:</label>
+    <label for="role"><fmt:message key="admin.user_role"/></label>
     <select id="role" name="role">
         <option value="admin">Admin</option>
         <option value="manager">Manager</option>

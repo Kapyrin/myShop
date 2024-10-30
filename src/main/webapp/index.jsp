@@ -15,18 +15,18 @@
 <br><br>
 <h1><fmt:message key="main.greetings"/></h1>
 <br><br>
-<h2><a href="jsp/login.jsp"><fmt:message key="main.login"/></a></h2>
+<form action="jsp/login.jsp" method="get" >
+    <button type="submit" class="btn btn-info">
+        <fmt:message key="main.login"/>
+    </button>
+</form>
 <br><br>
-<!--<form action="login" method="post">-->
-<!--    <label for="email">Email:</label>-->
-<!--    <input type="text" id="email" name="email" required>-->
-<!--    <br><br>-->
-<!--    <label for="password">Password:</label>-->
-<!--    <input type="password" id="password" name="password" required><br><br>-->
-<!--    <button type="submit">Login</button>-->
-<!--    <br><br>-->
-<!--</form>-->
-<h2><a href="jsp/createUser.jsp"><fmt:message key="main.create"/></a></h2>
+
+<form action="jsp/createUser.jsp" method="get">
+    <button type="submit" class="btn btn-secondary">
+        <fmt:message key="main.create"/>
+    </button>
+</form>
 </body>
 </html>
 

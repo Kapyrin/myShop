@@ -1,7 +1,7 @@
 package kapyrin.myshop.dao.impl;
 
 import kapyrin.myshop.configuration.MyHibernateConfiguration;
-import kapyrin.myshop.dao.DAOInterface.RepositoryWithOneParameterInSomeMethods;
+import kapyrin.myshop.dao.DAOInterface.RoleDaoRepository;
 import kapyrin.myshop.entity.Role;
 import kapyrin.myshop.exception.entity.RoleException;
 import org.apache.logging.log4j.LogManager;
@@ -12,7 +12,7 @@ import org.hibernate.Transaction;
 import java.util.List;
 import java.util.Optional;
 
-public enum RoleDAOImpl implements RepositoryWithOneParameterInSomeMethods<Role> {
+public enum RoleDAOImpl implements RoleDaoRepository<Role> {
     INSTANCE;
 
     private static final String GET_ROLE_BY_NAME = "FROM Role WHERE userRole = :roleName";
@@ -108,6 +108,7 @@ public enum RoleDAOImpl implements RepositoryWithOneParameterInSomeMethods<Role>
         }
     }
 
+    @Override
     public Optional<Role> getByRoleName(String roleName) {
         logger.debug("Getting role by role name: " + roleName);
         try (Session session = MyHibernateConfiguration.INSTANCE.getSessionFactory().openSession()) {

@@ -24,15 +24,12 @@ public class GetAllUsersServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        User loggedInUser = (User) session.getAttribute("user");
+        List<User> users = userService.getAll();
 
-        if (loggedInUser != null && loggedInUser.getRole().getUserRole().equals("admin")) {
-            List<User> users = userService.getAll();
-            request.setAttribute("users", users);
-            request.getRequestDispatcher("jsp/admin.jsp").forward(request, response);
-        } else {
-            response.sendRedirect("index.jsp");
-        }
+        HttpSession session = request.getSession();
+        session.setAttribute("users", users);
+
+        request.setAttribute("users", users);
+        request.getRequestDispatcher("jsp/admin.jsp").forward(request, response);
     }
 }

@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import kapyrin.myshop.dao.impl.*;
 import kapyrin.myshop.entity.OrderStatus;
 import kapyrin.myshop.entity.Product;
@@ -32,7 +33,7 @@ public class ManagerServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         userService = UserServiceImpl.INSTANCE.initRepository(UserDAOImpl.INSTANCE);
-        shopOrderService = ShopOrderServiceImpl.INSTANCE.initRepository(ShopOrderOrderDAOImpl.INSTANCE);
+        shopOrderService = ShopOrderServiceImpl.INSTANCE.initRepository(ShopOrderDAOImpl.INSTANCE);
         productService = ProductServiceImpl.INSTANCE.initRepository(ProductDAOImpl.INSTANCE);
         orderStatusService = OrderStatusServiceImpl.INSTANCE.initRepository(OrderStatusDAOImp.INSTANCE);
         productOrderService = ProductOrderServiceImpl.INSTANCE.initRepository(ProductOrderDaoImpl.INSTANCE);
@@ -47,6 +48,7 @@ public class ManagerServlet extends HttpServlet {
 
         Map<Long, List<ShopOrder>> userOrders = new HashMap<>();
         Map<Long, List<Product>> orderProducts = new HashMap<>();
+
 
         for (User user : onlyCustomers) {
             List<ShopOrder> orders = shopOrderService.getAllOrdersByUserId(user.getId());
@@ -69,6 +71,10 @@ public class ManagerServlet extends HttpServlet {
         } else {
             request.setAttribute("allOrders", shopOrderService.getAll());
         }
+
+        HttpSession session = request.getSession();
+        session.setAttribute("userOrders", userOrders);
+        session.setAttribute("users", onlyCustomers);
 
         request.setAttribute("users", onlyCustomers);
         request.setAttribute("userOrders", userOrders);

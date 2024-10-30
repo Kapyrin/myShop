@@ -45,5 +45,5 @@
     </select><br><br>
     <br> <br>
 
-    <button type="submit"><fmt:message key="admin.save_changes"/></button>
+    <button type="submit" class="btn btn-info"><fmt:message key="admin.save_changes"/></button>
 </form>

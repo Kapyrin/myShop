@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public enum ShopOrderOrderDAOImpl implements ShopOrderRepository<ShopOrder> {
+public enum ShopOrderDAOImpl implements ShopOrderRepository<ShopOrder> {
     INSTANCE;
 
     private static final String GET_ORDER_BY_USER_ID = "from ShopOrder where customer.id = :userId";
@@ -25,7 +25,7 @@ public enum ShopOrderOrderDAOImpl implements ShopOrderRepository<ShopOrder> {
     private static final String DELETE_ORDERS_BEFORE_DATE_FROM_PRODUCT_ORDER = "DELETE FROM ProductOrder po WHERE po.order.orderCreationDate < :date";
     private static final String DELETE_ORDERS_BEFORE_DATE_FROM_SHOP_ORDER = "DELETE FROM ShopOrder o WHERE o.orderCreationDate < :date";
 
-    private static final Logger logger = LogManager.getLogger(ShopOrderOrderDAOImpl.class);
+    private static final Logger logger = LogManager.getLogger(ShopOrderDAOImpl.class);
 
 
     @Override
@@ -221,4 +221,5 @@ public enum ShopOrderOrderDAOImpl implements ShopOrderRepository<ShopOrder> {
         }
 
     }
+
 }

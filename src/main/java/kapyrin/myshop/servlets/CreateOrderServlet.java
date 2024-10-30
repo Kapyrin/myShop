@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import kapyrin.myshop.dao.impl.OrderStatusDAOImp;
 import kapyrin.myshop.dao.impl.ProductDAOImpl;
 import kapyrin.myshop.dao.impl.ProductOrderDaoImpl;
-import kapyrin.myshop.dao.impl.ShopOrderOrderDAOImpl;
+import kapyrin.myshop.dao.impl.ShopOrderDAOImpl;
 import kapyrin.myshop.entity.*;
 import kapyrin.myshop.exception.entity.OrderStatusException;
 import kapyrin.myshop.service.impl.OrderStatusServiceImpl;
@@ -31,7 +31,7 @@ public class CreateOrderServlet extends HttpServlet {
     @Override
     public void init() {
         productService = ProductServiceImpl.INSTANCE.initRepository(ProductDAOImpl.INSTANCE);
-        shopOrderService = ShopOrderServiceImpl.INSTANCE.initRepository(ShopOrderOrderDAOImpl.INSTANCE);
+        shopOrderService = ShopOrderServiceImpl.INSTANCE.initRepository(ShopOrderDAOImpl.INSTANCE);
         productOrderService = ProductOrderServiceImpl.INSTANCE.initRepository(ProductOrderDaoImpl.INSTANCE);
         orderStatusService = OrderStatusServiceImpl.INSTANCE.initRepository(OrderStatusDAOImp.INSTANCE);
     }
@@ -84,7 +84,6 @@ public class CreateOrderServlet extends HttpServlet {
                 }
             }
         }
-
 
         resp.sendRedirect("/customerOrders");
     }

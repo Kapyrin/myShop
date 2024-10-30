@@ -30,7 +30,7 @@
 <form action="/findUserById" method="GET">
     <label for="userId"><fmt:message key="admin.user_id"/></label>
     <input type="number" id="userId" name="userId" required>
-    <button type="submit"><fmt:message key="admin.find_button"/></button>
+    <button type="submit" class="btn btn-info"><fmt:message key="admin.find_button"/></button>
 </form>
 
 <c:if test="${not empty foundUser}">
@@ -40,18 +40,23 @@
     <p><fmt:message key="admin.user_last_name"/> ${foundUser.lastName}</p>
     <p><fmt:message key="admin.user_email"/> ${foundUser.email}</p>
     <p><fmt:message key="admin.user_phone"/> ${foundUser.phoneNumber}</p>
-    <p>A<fmt:message key="admin.user_address"/> ${foundUser.address}</p>
-    <p>R<fmt:message key="admin.user_role"/>${foundUser.role.userRole}</p>
+    <p><fmt:message key="admin.user_address"/> ${foundUser.address}</p>
+    <p><fmt:message key="admin.user_role"/>${foundUser.role.userRole}</p>
 </c:if>
 
 <c:if test="${not empty errorMessage}">
     <p style="color:red">${errorMessage}</p>
 </c:if>
 
-<h2><fmt:message key="admin.all_users"/></h2>
+<h2><fmt:message key="admin.all_users"/>
+    <form action="/report" method="get" class="float-right">
+        <input type="hidden" name="reportType" value="allUsers"/>
+        <button type="submit" class="tn-secondary btn-sm"><fmt:message key="admin.download_order"/></button>
+    </form>
+</h2>
 <table class="table table-bordered table-striped">
     <tr>
-        <th><fmt:message key="admin.user_id"/><</th>
+        <th><fmt:message key="admin.user_id"/></th>
         <th><fmt:message key="admin.user_firs_name"/></th>
         <th><fmt:message key="admin.user_last_name"/></th>
         <th><fmt:message key="admin.user_email"/></th>
@@ -69,11 +74,11 @@
             <td>${user.address}</td>
             <td>${user.role.userRole}</td>
             <td>
-                <form action="/deleteUser" method="get" style="display:inline;">
+                <form action="/deleteUser" method="get">
                     <input type="hidden" name="userId" value="${user.id}"/>
                     <button type="submit" class="btn btn-danger"><fmt:message key="admin.delete_user"/></button>
                 </form>
-                <form action="/editUser" method="GET" style="display:inline;">
+                <form action="/editUser" method="GET" >
                     <input type="hidden" name="userId" value="${user.id}"/>
                     <button type="submit" class="btn btn-secondary"><fmt:message key="admin.update_user"/></button>
                 </form>

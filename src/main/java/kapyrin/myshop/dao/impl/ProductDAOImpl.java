@@ -14,6 +14,7 @@ import java.util.Optional;
 
 public enum ProductDAOImpl implements RepositoryWithOneParameterInSomeMethods<Product> {
     INSTANCE;
+    private static final String CHECK_USING_PRODUCT_IN_ORDER = "SELECT COUNT(po) FROM ProductOrder po WHERE po.product.id = :productId";
 
     private static final Logger logger = LogManager.getLogger(ProductDAOImpl.class);
 
@@ -54,6 +55,12 @@ public enum ProductDAOImpl implements RepositoryWithOneParameterInSomeMethods<Pr
 
     @Override
     public void deleteById(long id) {
+        logger.debug("Attempting to delete product with id " + id);
+        if (existProductInAnyOrder(id)) {
+            logger.warn("Cannot delete product with id " + id + "because it is associated with existing order");
+            throw new ProductException("Cannot delete product because it is associated with existing order");
+        }
+
         Transaction transaction = null;
         logger.debug("Deleting product with id " + id);
         try (Session session = MyHibernateConfiguration.getSessionFactory().openSession()) {
@@ -111,5 +118,18 @@ public enum ProductDAOImpl implements RepositoryWithOneParameterInSomeMethods<Pr
             throw new ProductException("Failed to retrieve product with id " + id, e);
         }
         return Optional.empty();
+    }
+
+    private boolean existProductInAnyOrder(long productId) {
+        logger.debug("Checkin existing product in any order");
+        try (Session session = MyHibernateConfiguration.INSTANCE.getSessionFactory().openSession()) {
+            Long count = session.createQuery(CHECK_USING_PRODUCT_IN_ORDER, Long.class)
+                    .setParameter("productId", productId)
+                    .uniqueResult();
+            return count != null && count > 0;
+        } catch (Exception e) {
+            logger.error("Error checking if product is in order", e);
+            throw new ProductException("Error checking if product is in order", e);
+        }
     }
 }

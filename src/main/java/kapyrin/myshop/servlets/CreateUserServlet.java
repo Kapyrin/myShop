@@ -18,19 +18,20 @@ import java.io.IOException;
 public class CreateUserServlet extends HttpServlet {
     private UserServiceImpl userService;
     private RoleServiceImpl roleService;
+    private UserRequestMapper userRequestMapper;
 
     @Override
     public void init() {
         userService = UserServiceImpl.INSTANCE.initRepository(UserDAOImpl.INSTANCE);
         roleService = RoleServiceImpl.INSTANCE.initRepository(RoleDAOImpl.INSTANCE);
-        UserRequestMapper.INSTANCE.init(roleService);
+        userRequestMapper = UserRequestMapper.INSTANCE.init(roleService);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        User user = UserRequestMapper.INSTANCE.extractUserFromRequest(req, false);
+        User user = userRequestMapper.extractUserFromRequest(req, false);
         userService.add(user);
-        User userFromDb = UserServiceImpl.INSTANCE.authenticate(user.getEmail(), user.getPassword()).orElse(null);
+        User userFromDb = userService.authenticate(user.getEmail(), user.getPassword()).orElse(null);
 
         HttpSession session = req.getSession();
         session.setAttribute("user", userFromDb);
