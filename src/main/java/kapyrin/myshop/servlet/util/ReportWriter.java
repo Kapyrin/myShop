@@ -9,8 +9,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-import kapyrin.myshop.servlets.util.utilinterface.GetServletContext;
-import kapyrin.myshop.servlets.util.utilinterface.SaveToFile;
+import kapyrin.myshop.servlet.util.utilinterface.GetServletContext;
+import kapyrin.myshop.servlet.util.utilinterface.SaveToFile;
 
 public enum ReportWriter implements SaveToFile, GetServletContext {
     INSTANCE;
