@@ -1,4 +1,4 @@
-package kapyrin.myshop.servlets.util.utilinterface;
+package kapyrin.myshop.servlet.util.utilinterface;
 
 import jakarta.servlet.ServletContext;
 
