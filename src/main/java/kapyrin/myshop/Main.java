@@ -5,8 +5,8 @@ import kapyrin.myshop.entity.*;
 import kapyrin.myshop.exception.entity.RoleException;
 import kapyrin.myshop.exception.entity.UserException;
 import kapyrin.myshop.service.impl.UserServiceImpl;
-import kapyrin.myshop.servlets.util.ReportWriter;
-import kapyrin.myshop.servlets.util.ReportStringGenerator;
+import kapyrin.myshop.servlet.util.ReportWriter;
+import kapyrin.myshop.servlet.util.ReportStringGenerator;
 
 import java.util.List;
 

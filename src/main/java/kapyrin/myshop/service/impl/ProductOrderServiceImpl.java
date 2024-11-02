@@ -1,7 +1,6 @@
 package kapyrin.myshop.service.impl;
 
 import kapyrin.myshop.dao.DAOInterface.ProductOrderRepository;
-import kapyrin.myshop.dao.DAOInterface.RepositoryWithTwoParametersInSomeMethods;
 import kapyrin.myshop.entity.Product;
 import kapyrin.myshop.entity.ProductOrder;
 import kapyrin.myshop.service.ServiceProductOrder;
